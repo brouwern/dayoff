@@ -1,0 +1,23 @@
+Package: dayoff
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "First",
+           family = "Last",
+           role = c("aut", "cre"),
+           email = "first.last@example.com")
+Description: What the package does (one paragraph).
+License: CCBY-4.0
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Imports: 
+    dplyr,
+    tidyr,
+    ggplot2,
+    ggpubr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.0

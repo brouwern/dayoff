@@ -1,0 +1,40 @@
+---
+title: "a) Preface to the dayoff package"
+author: "Avril Coghlan, adapted by Nathan Brouwer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warnings = FALSE
+)
+```
+
+The "dayoff" package is a teaching-oriented package based off of Dr. Avril Coghlan's [*A little book of R for bioinformatics.*](https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/index.html).  Almost all of text and code was originally written by Dr. Coghlan and distributed under the [Creative Commons 3.0](https://creativecommons.org/licenses/by/3.0/us/) license.  
+
+## The name of the package
+
+The package is named in honor of pioneering biochemist and bioinformatician [Margaret Dayoff](https://en.wikipedia.org/wiki/Margaret_Oakley_Dayhoff).
+
+## Changes made to original source
+
+To meet the needs of my course I have
+
+1. Edited the original HTML document into  RMarkdown 
+1. Use RStudio IDE instead of basic R IDE
+1. Split up into short lessons
+1. Place functions by Coghlan into an R package.  
+1. Changed which functions or packages are used; for example, replacing some SeqinR functions with entrez functions.
+1. Added additional plots and changed some plotting functions
+1. Removed .jpg images; I hope to add these back
+1. Fixed typos, removed dead links, and additional links, truned links to hypertext
+1. Added a summary section at the beginning listing the functions, vocabulary, software, organism, accession numbers
+
+
