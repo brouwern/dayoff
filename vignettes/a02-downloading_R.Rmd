@@ -1,6 +1,6 @@
 ---
-title: "B) Installing R and RStudio"
-author: "Avril Coghlan, adapted by Nathan Brouwer"
+title: "b) Installing R & RStudio"
+author: "Dr. Avril Coghlan, adapted by Nathan Brouwer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

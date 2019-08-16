@@ -1,5 +1,5 @@
 ---
-title: "C) Installing and getting to know RStudio"
+title: "c) Installing & getting to know RStudio"
 author: "Nathan Brouwer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

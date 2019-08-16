@@ -181,6 +181,11 @@ list.files(here::here("/inst/extdata"))
 # use_r("milk_raw")
 ```
 
+```{r}
+use_data_raw(name = "dengueseq", open = interactive())
+write(dengueseq, file="dengueseq.fasta")
+```
+
 
 ## License
 

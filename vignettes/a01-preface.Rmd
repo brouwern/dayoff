@@ -1,6 +1,6 @@
 ---
 title: "a) Preface to the dayoff package"
-author: "Avril Coghlan, adapted by Nathan Brouwer"
+author: "Nathan Brouwer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

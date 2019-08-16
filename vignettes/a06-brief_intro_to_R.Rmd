@@ -1,5 +1,5 @@
 ---
-title: "f) A brief introduction to R"
+title: "f) A brief intro to R"
 author: "Avril Coghlan, adapted by Nathan Brouwer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
