@@ -4,12 +4,12 @@
 \name{dayoff-package}
 \alias{dayoff}
 \alias{dayoff-package}
-\title{dayoff: What the Package Does (One Line, Title Case)}
+\title{dayoff: Bioinformatics in R}
 \description{
-What the package does (one paragraph).
+Bioinformatics in R.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com}
+\strong{Maintainer}: Nathan Brouwer \email{brouwern@gmail.com}
 
 }
 \keyword{internal}
