@@ -3,14 +3,35 @@
 #' @examples
 #'
 #' header. <- ">NC_001477.1 Dengue virus 1, complete genome"
-#' fasta_cleaner(dengueseq_fasta, header = header.)
+#' fasta_cleaner(dengueseq_fasta, parse = TRUE)
 #'
 #'
-#' fasta_cleaner <- function(fasta_object, header){
-#'         fasta_object <- gsub("\n", "", fasta_object)
-#'         fasta_object <- gsub(header, "", fasta_object)
+#' fasta_cleaner <- function(fasta_object, parse = TRUE){
+#'
+#'         #header <- gsub("\\|","",header)
+#'         #header <- gsub("\\+","",header)
+#'         #header <- gsub("\\=","",header)
+#'         #header <- gsub("\\:","",header)
+#'         #header <- gsub("\\;","",header)
+#'
+#'         #fasta_object <- gsub("\\|","",fasta_object)
+#'         #fasta_object <- gsub("\\+","",fasta_object)
+#'         #fasta_object <- gsub("\\=","",fasta_object)
+#'         #fasta_object <- gsub("\\:","",fasta_object)
+#'         #fasta_object <- gsub("\\;","",fasta_object)
+#'
+#'
+#'         #fasta_object <- gsub(header, "", fasta_object)
+#'
+#'        fasta_object <- sub("^(>)(.*?)(\\n)(.*)(\\n\\n)","\\4",fasta_object)
+#'        fasta_object <- gsub("\n", "", fasta_object)
+#'
+#'         if(parse == TRUE){
 #'         fasta_object <- stringr::str_split(fasta_object,
 #'                                   pattern = "",
 #'                                   simplify = FALSE)
+#'         }
+#'
+#'
 #'         return(fasta_object[[1]])
 #' }
