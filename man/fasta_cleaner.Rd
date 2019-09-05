@@ -6,6 +6,11 @@
 \usage{
 fasta_cleaner(fasta_object, parse = TRUE)
 }
+\arguments{
+\item{fasta_object}{R object with FASTA character data to clean}
+
+\item{parse}{Parse data to character vector?}
+}
 \description{
 Function to convert a FASTA file stored as an object into a vector
 }
