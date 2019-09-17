@@ -12,14 +12,16 @@ In this exercise we will practice manipulating matrices and vector by exploring 
 
 Load Biostrings, dayoff and functions
 ```{r}
-library(Biostrings)
+
 library(dayoff)
 library(flextable)
 library(webshot)
-library(here)
 
-fi. <- "functions.R"
-source(here("02-worked_examples",fi.))
+install.packages("BiocManager")
+library(BiocManager)               #Load BiocManager in to memory
+BiocManager::install("Biostrings") #Manipulate biological string data
+
+library(Biostrings)
 
 ```
 

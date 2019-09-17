@@ -1,5 +1,10 @@
 pandoc: '2.6'
 pkgdown: 1.3.0
 pkgdown_sha: ~
-articles: []
+articles:
+  a01-preface: a01-preface.html
+  a02-loading_tutorials: a02-loading_tutorials.html
+  x-creating_a_package: x-creating_a_package.html
+  y-building_a_package: y-building_a_package.html
+  z-build_and_rebuild_package: z-build_and_rebuild_package.html
 
