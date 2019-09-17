@@ -1,0 +1,29 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## Test tutorial
+
+This file is included in order to test the function open_tutorial().
+
+
+## Test workflow
+
+Load the dayoff packge into memory (this shouldn't be necessary actually, but just to be sure...)
+```{r}
+library(dayoff)
+```
+
+Load some data contained in the package
+```{r}
+data(aa_chars)
+```
+
+
+Make a histogram using a packge which dayoff depends on, ggpubr
+```{r}
+gghistogram(data = aa_chars, x = "MW.da")
+```
+

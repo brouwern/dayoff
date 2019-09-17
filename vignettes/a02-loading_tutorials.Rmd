@@ -1,0 +1,106 @@
+---
+title: "a 02) Loading tutorials from the dayoff package"
+author: "Nathan Brouwer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{a 02) Loading tutorials from the dayoff package}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warnings = FALSE
+)
+```
+
+The *dayoff* package contains standard R vignettes which detail features of the package and have written tutorials on bioinformatics tasks.  These are best accessed via the package website at https://brouwern.github.io/dayoff/articles/
+
+The package also contains .Rmd tutorials which are meant to be interactive.  These are all downloaded when the package is installed and can be called up using the following function:
+
+First, you can see what tutorials are available
+```{r, eval = F}
+library(dayoff)
+tutor_show()
+```
+
+
+You can open a specific tutorial using tutor_open()
+
+```{r, eval = F}
+tutor_open()
+```
+
+
+## NOTE: Every time you download dayoff these tutorials will be re-installed! Save your work/notes with a new file name if you want to keep your unique version of the file
+
+I recommend that while working through these files you save them somewhere else to preserve your work.
+
+
+
+## For the curious: how I'm loading these files
+
+These tutorial files are not standard elements of an R package, so I've added an extra directory to the package that's not normally there, and written the above function to load it for you.  Here's what the function is doing:
+
+First, the function has to figure out where your copy of *dayoff* is located.  This is done with the system.file() function.
+
+system.file() tells you where on your computur a package happens to be located.  This can vary between computers, especially between Mac, PC and Linux.
+
+```{r}
+system.file(package = "dayoff")
+```
+
+
+Many R packages have a folder within them called "extdata" ("external data") to contain things not essential to the package's functioning.  I'll save the file path for the package to an object called dayoff.path and then call the utlity function list.files() to see what's in the package folder.
+
+```{r}
+dayoff.path <- system.file(package = "dayoff")
+list.files(dayoff.path)
+```
+ I've made a folder called "tutorials" which is not normally in an R package
+
+```{r}
+tutor.path <- paste0(dayoff.path,"/tutorials")
+list.files(tutor.path)
+```
+
+I've made a function that carries out this workflow automatically
+```{r, eval = F}
+tutor_show()
+```
+
+
+The .Rmd or .R file within the tutorials folder can be loaded by constructing the proper file name
+```{r}
+test.tutorial <- "02-03_alignment.Rmd"
+tutor.file.path <- paste0(tutor.path,"/",test.tutorial)
+```
+
+We can double check that the file is available using file.exists()
+```{r}
+file.exists(tutor.file.path)
+```
+
+We can then load the tutorial file by using a function called system, which allow us to specify a program (RStudio) and a file we want the program to act on.
+
+First we need to construct a character string that specifies the program and the file
+```{r}
+system.string <- paste("RStudio", tutor.file.path)
+```
+
+Now we can call system() and the file should open up.
+```{r, eval = F}
+system(system.string)
+```
+
+This workflow is impleneted by the function tutor_open
+```{r, eval = F}
+tutor_open()
+```
+
+

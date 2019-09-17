@@ -1,5 +1,5 @@
 ---
-title: "a) Preface to the dayoff package"
+title: "a 01) Preface to the dayoff package"
 author: "Nathan Brouwer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

@@ -13,13 +13,28 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    tabulizer,
+    tabulizerjars
 VignetteBuilder: knitr
 Imports: 
+    flextable,
     dplyr,
     tidyr,
     ggplot2,
     ggpubr,
-    stringr
+    stringr,
+    stringi,
+    devtools,
+    bookdown,
+    here,
+    webshot,
+    BiocManager,
+    seqinr,
+    ape,
+    readxl,
+    formatR,
+    tufte,
+    rJava
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
