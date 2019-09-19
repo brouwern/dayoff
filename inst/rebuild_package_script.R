@@ -1,0 +1,7 @@
+library(devtools)
+devtools::clean_vignettes()
+devtools::build_vignettes()
+devtools::document(roclets=c('rd', 'collate', 'namespace'))
+devtools::load_all(".")
+devtools::check()
+pkgdown::build_site()

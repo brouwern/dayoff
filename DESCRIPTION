@@ -27,13 +27,13 @@ Imports:
     bookdown,
     here,
     webshot,
-    BiocManager,
     seqinr,
     ape,
     readxl,
     formatR,
     tufte,
     rJava,
-    BiocManager
+    BiocManager,
+    rstudioapi
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1

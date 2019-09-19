@@ -2,17 +2,24 @@
 % Please edit documentation in R/tutor_open.R
 \name{tutor_open}
 \alias{tutor_open}
-\title{Open a specified tutorial file}
+\title{Open a specified tutorial file contained within the package}
 \usage{
 tutor_open(tutorial = NULL)
 }
 \arguments{
-\item{tutorial}{name of tutorial to open}
+\item{tutorial}{name of tutorial to open as a quotes string.  Defaults to NULL and opens up a sample tutorial.}
 }
 \description{
-Open a specified tutorial file
+This function identifies where on your local hard drive the dayoff package is located.  It then locates the tutorials folder and opens the specified tutorial using rstudioapi::navigateToFile
+NOTE: The function system() has similar functionality as navigateToFile() but seems to behave differ
+}
+\details{
+TO DO: Add a call to file.exists()
+Add an argument for running the function but not exectuting the opening of the file (Eg, just doing file.exists).  This might make testing easier.
 }
 \examples{
+
+# Open up an example file.  To see a list of available tutorials use tutor_show()
 tutor_open()
 
 }

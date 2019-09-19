@@ -10,19 +10,20 @@ In this exercise we will practice manipulating matrices and vector by exploring 
 
 ## Preliminaries
 
-Load Biostrings, dayoff and functions
+Load basic packages
 ```{r}
-
 library(dayoff)
 library(flextable)
 library(webshot)
+library(dayoff)
+```
 
-install.packages("BiocManager")
-library(BiocManager)               #Load BiocManager in to memory
+Install the Biostrings package from Bioconductor; you don't have to run this if you already happen to have downloaded Biostrings before
+```{r, echo = F}
+library(BiocManager)
+
 BiocManager::install("Biostrings") #Manipulate biological string data
-
 library(Biostrings)
-
 ```
 
 ## The BLOSUM matrix

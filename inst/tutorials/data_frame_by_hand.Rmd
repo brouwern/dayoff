@@ -1,0 +1,36 @@
+---
+title: "Building dataframe by hand"
+author: "Nathan Brouwer"
+date: "9/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+org <- c("M13","lamb", "T2", "T4")
+G.p <- c(6.41, 4.85,    1.60, 1.66)
+G.s <- c(10^3, 10^4,    10^5, 10^5)
+u.g <- c(0.0046, 0.0038, 0.0043, 0.0033)
+
+
+
+
+length(G.s) == length(u.g)
+
+df <- data.frame(organism = org,
+           G.p = G.p,
+           G.s = G.s,
+           u.g = u.g)
+
+df
+
+df$G.p * 10
+df$G <-df$G.p * df$G.s
+df
+
+plot(log(u.g) ~ log(G), data = df)
+```
+

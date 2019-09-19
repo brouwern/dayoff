@@ -85,6 +85,10 @@ Single function to build whole site:
 pkgdown::build_site()
 ```
 
+```{r}
+
+```
+
 
 #### Build piece by piece
 

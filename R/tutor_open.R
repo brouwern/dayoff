@@ -1,8 +1,16 @@
-#' Open a specified tutorial file
+#' Open a specified tutorial file contained within the package
 #'
-#' @param tutorial name of tutorial to open
+#' This function identifies where on your local hard drive the dayoff package is located.  It then locates the tutorials folder and opens the specified tutorial using rstudioapi::navigateToFile
+#' NOTE: The function system() has similar functionality as navigateToFile() but seems to behave differ
+#'
+#' TO DO: Add a call to file.exists()
+#' Add an argument for running the function but not exectuting the opening of the file (Eg, just doing file.exists).  This might make testing easier.
+#'
+#' @param tutorial name of tutorial to open as a quotes string.  Defaults to NULL and opens up a sample tutorial.
 #'
 #' @examples
+#'
+#' # Open up an example file.  To see a list of available tutorials use tutor_show()
 #' tutor_open()
 #'
 #' @export
@@ -28,8 +36,10 @@ tutor_open <- function(tutorial = NULL){
   message("Opening: ",tutor.file.path)
 
 
-  system.string <- paste("RStudio", tutor.file.path)
+  #system.string <- paste("RStudio", tutor.file.path)
+  #system(system.string)
 
+  file.exists(tutor.file.path)
 
-  system(system.string)
+  rstudioapi::navigateToFile(tutor.file.path)
 }

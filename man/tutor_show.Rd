@@ -9,3 +9,8 @@ tutor_show()
 \description{
 Show the tutorials currently available for the dayoff package
 }
+\examples{
+tutor_show()
+
+
+}

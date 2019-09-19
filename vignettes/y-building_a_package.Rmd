@@ -1,5 +1,5 @@
 ---
-title: "z2) Building and rebuilding vignettes - orig"
+title: "y) Building and rebuilding vignettes"
 author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
