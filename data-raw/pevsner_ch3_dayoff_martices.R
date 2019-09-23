@@ -1,3 +1,6 @@
+# Make Dayhoff matrices from Tables in Pevsner chapter3
+
+
 # #library("rJava")
 # #library("tabulizer")
 # #library("here")
@@ -70,3 +73,75 @@
 #
 #
 #
+
+
+# Figure 3.8 page 81 / Figure 80 Dayhoff et al 1978 (?)
+## values multiplied by 10
+
+
+
+fi. <- here::here("data-raw","pevsner3_fig3_8.csv")
+pams <- read.csv(fi., stringsAsFactors = F)
+
+j.drop <- c(1,2)
+i.drop <- c(1,2,
+            nrow(pams)-1,
+            nrow(pams))
+
+letter3 <- pams[2,-j.drop]
+letter1 <- pams[1,-j.drop]
+length(letter3) == length(letter1)
+length(letter3)
+
+pams <- pams[-i.drop, -j.drop]
+dim(pams)
+names(pams) <- letter3
+dim(pams)
+
+rownames(pams) <- as.vector(letter1)
+
+#Fix type
+pams["L","Cys"] <- 0
+for(i in 1:ncol(pams)){
+  pams[,i] <- as.numeric(pams[,i])
+}
+
+pams <- cbind(t(letter3), pams)
+names(pams)[1] <- "code"
+
+
+pams2 <- pams[,-1]
+
+pams2[is.na(pams2)] <-0
+
+pams2 <- pams2 + t(pams2)
+
+mutablity <- apply(pams2,2,sum)
+
+mutablity.relative <- mutablity/3644*100
+mutablity.relative[order(mutablity.relative)]
+
+
+
+freq <- c(0.089,0.087,0.085,0.081,0.070,0.065,0.058,0.051,0.050,0.047,0.041,0.040,0.038,0.037,0.034,0.033,0.030,0.015,0.010)
+
+hist(freq)
+
+
+
+library(reshape2)
+
+pams.long <- na.omit(melt(data = pams, variable.name = "code.column",value.name = "mutations"))
+dim(pams.long)
+summary(pams.long)
+hist(pams.long$value)
+
+library(ggpubr)
+gghistogram(data = pams.long, x= "mutations", add = "mean")
+
+#why no diagonal
+#why
+
+
+i.val <- which(pams.long$code == "Val" | pams.long$code.column == "Val")
+length(i.val)

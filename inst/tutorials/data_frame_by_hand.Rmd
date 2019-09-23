@@ -10,7 +10,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = F)
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
 ```
 
 
@@ -26,9 +26,11 @@ There are two versions of this tutorial.  This versions will guide you through t
 
 For this you'll need a copy of Drake (1991), which can be found at https://www.pnas.org/content/88/16/7160
 
+We will focus on rebuiling Table 1 and Figure 1 entirely in R without importing the data from a spreadsheet.
+
 ### Packages
 
-The only package you will need is ggpubr.  Load ggpubr using library()
+The only package you will need is ggpubr.  Load ggpubr using library(): `r library(ggpubr)`
 
 ```{r}
 
@@ -106,7 +108,7 @@ org <- c("M13","lamb", "T2", "T4",
 ```
 
 
-As always we need to heck to make sure that the object we're making is what we think it is and represents what we want. Use the following commands to check on the object:
+As always we need to check to make sure that the object we're making is what we think it is and represents what we want. Use the following commands to check on the object:
 
 * is
 * is.vector
@@ -123,10 +125,12 @@ As always we need to heck to make sure that the object we're making is what we t
 ```
 
 
-Next let's make the next vector.    Below is the code you'll need, but I've left off the last 3 numbers.  Paste the code into the code chunk and add the necessary numbers.  Don't forget the commas.  Also note that numbers don't get quotes around them.
+Next let's make the next vector.    Below is the code you'll need, but I've left off the last 3 numbers.  Paste the code into the code chunk and add the necessary numbers from the original table.  Don't forget the commas.  Also note that numbers **don't** get quotes around them.
 
 G.p <- c(6.41, 4.85,    1.60, 1.66, 4.70, 4.70, 4.70, 1.38, 1.38 )
 ```{r}
+# Run the code tomake the G.p vector here
+# be sure to add the necessary numbers
 
 
 ```
@@ -138,6 +142,13 @@ Again, we explore this.  Run these functions and note the output
 * length
 * nchar
 
+```{r}
+# Type code to explore the G.p vector here
+
+
+```
+
+
 
 ## Checking the length of vectors
 
@@ -148,11 +159,13 @@ All of our columns have the same number of elements in them.  We can make sure w
 
 First, check the length of one of the vectors
 ```{r}
+# Confirm the length of of one of the vectors
 
 ```
  
 Next, run this code to check that the two lengths are the same: length(G.p) == length(org)
 ```{r}
+# Check that the lengths are the same
 
 
 ```
@@ -165,13 +178,17 @@ To take the exponent of something in R use the up caret ^
 So, if I want to type 1 million I can do this
 
 ```{r}
+
 1000000
 ```
+
 
 or I can do this
 
 ```{r}
+
 1*10^6
+
 ```
 
 Note that the output is in "e" notation.  I could type this if I wanted
@@ -193,17 +210,21 @@ In the chunk below, write a logical expression using == to confirm that 1000000 
 To represent the genome size column I could do this (just showing first 3 numbers)
 
 ```{r}
+
 G <- c(6.41*10^5, 4.85*10^4, 1.60*10^5)
+
 ```
 
-However. when typing up this data I found it easier to break up the columns containing exponents into multiple columns, other wise I was getting cross eyed.
+However. when typing up this data I found it easier to break up the columns containing exponents into multiple columns, otherwise I was getting cross eyed.
 
 One way to do this would be to split each number into what I'm calling a "prefix" and a "suffix".  Above we made a vector called G.p, which is the prefix of these numbers - the part before the multiplication symbol.
 
-We can make another vector that contains the suffic - the 10^x part.
+We can make another vector that contains the suffix - the 10^x part.
 
 ```{r}
+
 G.s <- c(10^3, 10^4,    10^5, 10^5, 10^6, 10^6, 10^6, 10^7, 10^7, 10^7, 10^7, 10^7)
+
 ```
 
 We can then multiple these together and get the value we want
@@ -223,16 +244,20 @@ G.p[2]*G.s[2]
 This works pretty well, but I found typing all those exponents to still be a little annoying, especially since many get repeated.  I think its easier to just type the exponent.  We'll call this object "G.exp" for exponent
 
 ```{r}
+
 G.exp <- c(3, 4,    5, 5, 6, 6, 6, 7, 7, 7, 7, 7)
+
 ```
 
 Again, if you want to be fancy you can play around with the rep() function, though this is optional
 
 ```{r}
+
 G.exp <- c(3, 4,    
          rep(5, 2),
          rep(6, 3),
          rep(7, 5))
+
 ```
 
 
@@ -251,26 +276,33 @@ Here I've added some parentheses to clarify the order of operations
 If its still not clear, then maybe this will help:
 
 ```{r}
+
 G.s == 10^G.exp
+
 ```
 
 
 
-Let's make a final G vector with genome sizes
+Let's make a final G vector with genome sizes.  This is the "prefix" I made (G.p) multipled by 10 raised to the exponent I defined in the vector G.exp.
 
 ```{r}
+
 G <-  G.p*(10^G.exp)
+
 ```
 
-We can make a basic plot showing the distribution of genome sizes using the histogram function in R.  
+We can make a basic plot showing the distribution of genome sizes using the histogram function in R, hist().  
 
 ```{r}
+
 hist(G)
+
 ```
 
-The far left value is 0e+00, which just means 0.0.  The first tick mark is 1e+07.  Write this out using an exponent symbol ^
+The far left value is 0e+00, which just means 0.0.  The first tick mark is 1e+07.  Write this out using an exponent symbol ^ below:
 
 ```{r}
+
 
 
 ```
@@ -281,38 +313,43 @@ How do you interpret this graph?  Ask you neighbor if they know.  If you aren't 
 Another way to look at this data would be with a boxplot
 
 ```{r}
+
 boxplot(G)
+
 ```
 
-This is actually a relly ugly plot, but whatever.
+This is actually a realy ugly plot, but whatever.
 
-hist() and boxplot() are great for quick and dirty plots.  Normally I'll use ggpubr to make plots using gghistogram and ggboxplot
+hist() and boxplot() are great for quick and dirty plots.  Normally though I'll use ggpubr to make plots using gghistogram and ggboxplot
 
 
 
 ## Some more vectors
 
-Next we have the per genome mutation rate.  First let's do the "prefix"
+Next we have the per genome mutation rate. The "u" is a stand in for "mu" which is commonly used for mutation rates.  So "u.bp" reads "mutation rate in bp."  First let's do the "prefix" and assign it to a vector u.bp.p (mutation rate in bp prefix).
 
 ```{r}
+
 u.bp.p <- c(7.2, 7.7, 2.7, 2, 4.1, 6.9, 5.1, 2.8, 7.9, 1.7, 4.5, 4.6)
+
 ```
 
 
-Confirm that this vector is the same size as our previous ones (Hint: requires "=")
+Confirm that this vector is the exact same size as our previous ones (Hint: requires "=")
 ```{r}
 
 
 ```
 
 
-Confirm that what you just made was a vector
+Confirm that what you just made was a vector.  (Hint: what "is" it?)
 ```{r}
+
 
 ```
 
 
-Now let's do the exponent
+Now let's do the exponent and save it to a vector u.bp.exp.
 ```{r}
 u.bp.exp <- c(1-7, 
             -8, -8,-8,
@@ -324,11 +361,13 @@ u.bp.exp <- c(1-7,
 ```
 
 
-For those who want to be fancy, can you do this using the rep() command?
+For those who want to be fancy, can you do this using the rep() command? (Totally optionall).
 
-As before, make sure its the right length
+As before, make sure this new vector u.bp.exp is the right length
 ```{r}
+
 length(u.bp.exp)
+
 ```
 
 
@@ -339,7 +378,8 @@ Now, ake the final column by carrying out the math.  To do this put the followin
 * The caret ^
 * The exponent u.bp.exp
 
-Assign the result to an object u.bp
+Assign the result to an object u.bp.  Try to type this out yourself. 
+`r   u.bp <- u.bp.p*10^u.bp.exp  `
 
 ```{r}
 
@@ -348,18 +388,20 @@ Assign the result to an object u.bp
 
 
 
-As always, check that the size is correct
+As always, check that the size of u.bp is correct
 
 ```{r}
 
 
 ```
+
 
 
 
 The last column is the per genome mutation rate, u.g.
 
 ```{r}
+
 u.g <- c(0.0046, 0.0038, 0.0043, 
          0.0033, 0.0019, 0.0033, 
          0.0024, 0.0038, 0.11,
@@ -374,18 +416,50 @@ length(G.s) == length(u.g)
 ```
 
 
-I'm not 110% sure about the methods for this paper.  I"m wondering if the per genome mutation rate u.g can be calculated from the per base pair mutation rate (u.bp) and the genome size (G). How do you think you could do this calculation in terms of the bioloyg, the math, and in R?  Save the output as an object u.g.2 (2nd version of u.g).  
+I'm not 110% sure about the methods for this paper.  I'm wondering if the per genome mutation rate u.g can be calculated from the per base pair mutation rate (u.bp) and the genome size (G). How do you think you could do this calculation in terms of the biology, the math, and in R?  Save the output as an object u.g.2 (2nd version of u.g).  
 
-Hint: Don't over think it; there's just one mathematical operation, either multiplication or division.
+Hint: Don't over think it; there's just one mathematical operation, either multiplication or division (The answer is a bit further down).
 
 ```{r}
+
+
 
 
 ```
 
 
+Some more hints:  G is the size of each genome.  So the first genome in our vector has the size in base pairs (bp)
+```{r}
+G[1]
+```
 
-So we have the value of u.g from the column in Table 1 that we typed up above, and now we have our attempt to calculate it.  One way to check them against each other is to make a simple dataframe and compare by eye
+
+u.bp is the rate of mutations per base pairs.  The mutation rate per base pairs for the first genome in the vector is
+```{r}
+u.bp[1]
+```
+
+So, if we ant to determine the number of mutations per genome, we multiply the size of the genome in bp by the per bp rate of mutation
+
+```{r}
+G[1]*u.bp[1]
+```
+
+We can compare this to what is in the table as the per genome rate of mutation (u.g)
+```{r}
+u.g[1]
+```
+
+We can do all the multiplication of the whole vector in one shot like this: 
+`r   u.g.2 <- G*u.bp    `.  Run this code in the chunk below
+```{r}
+
+
+
+```
+
+
+So we have the value of u.g from the column in Table 1 that we typed up above, and now we have our attempt to re-calculate it.  One way to check them against each other is to make a simple dataframe and compare by eye
 
 ```{r}
 data.frame(u.g, u.g.2)
@@ -399,14 +473,14 @@ round(0.0037, 4)
 ```
 
 
-Instead of u.g.2, run the previous data.frame code  with round(u.g.2, 4).  THat is, instead of u.g.2, put in round(u.g.2, 4)
+Instead of u.g.2, run the previous data.frame code  with round(u.g.2, 4).  That is, instead of u.g.2, put in round(u.g.2, 4)
 
 ```{r}
 
 
 ```
 
-Thigns don't round off perfectly, perhaps because of other rounding they did during their workflow.  But there's something weird with the first number.  Either I made a type or somethign else is up.  Let me know what you think!
+THings don't round off perfectly, perhaps because of other rounding they did during their workflow.  But there's something weird with the first number.  Either I made a type or somethign else is up.  Let me know what you think!
 
 Another useful comparison here is ==.  See if you can predict what will happen when you run:
 u.g == round(u.g.2, 4)
@@ -450,7 +524,9 @@ As always, we want to check what we just made.  Run at least 2 commands explorin
 We can make figure 1 with the basic R plot() command.  FIrst let's plot the raw data.  
 
 ```{r}
+
 plot(u.bp ~ G, data = table1)
+
 ```
 
 
@@ -476,11 +552,13 @@ R's default log() functions uses the natural log ln.  To do the base 10 log chan
 ggpubr makes nicer plots than base R, but you can't nest functions in it.  So what we need to do is make a column of the logged variables.  For Genome size it requires this:
 
 ```{r}
+
 table1$log10.G <- log10(table1$G)
 
 ```
 
-Now make a new column for logged u.bp, using log10.  Call it log10.u.bp
+Now make a new column for logged u.bp, using log10.  Call it log10.u.bp.  Try to type it out yourself.
+`r table1$log10.u.bp  <- log10(table1$u.bp) `
 
 ```{r}
 
@@ -492,11 +570,18 @@ Now make a new column for logged u.bp, using log10.  Call it log10.u.bp
 
 
 While we're at it lets make a log10 mutation rate per genome column called log10.u.g
+`r table1$log10.u.g  <- log10(table1$u.g) `
 
 ```{r}
 
 
 
+```
+
+
+Check our columns
+```{r}
+summary(table1$log10.u.bp)
 ```
 
 
@@ -594,5 +679,12 @@ ggscatter(data = table1,
           cor.coef =TRUE) +
   xlab("log(Genome size)")     +
   ylab("log(mutations per bp)")
+```
+
+
+
+
+```{r}
+
 ```
 
