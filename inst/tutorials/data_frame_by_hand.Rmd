@@ -20,6 +20,16 @@ This exercise is meant to challenge you to build a dataframe by hand in R.  It i
 
 There are two versions of this tutorial.  This versions will guide you through the process of building the dataframe and exploring it.  A second version is designed to challenge your understanding of the steps we went through.
 
+## To do
+
+a studnet noted on an earlier vs. of the assignment; feel free to take this approach when possible.  I may modify the assignmnet in the future to reflect this approach
+
+"I was finding the exponent notation" used in the assignment "tedious, so I tried what I've always done in other languages and it works. Other programmers might be more comfortable with this so it might be worth mentioning if we do more exercises with exponents:
+
+Using "E" (or "e") immediately after a number followed by the power work, and you only need to include sign if the notation is for a decimal (e.g. 1,000,000 can be represented by "1E6" and 0.01 by "1E-2").
+
+In the data frames exercise, the vector with numbers from the paper could've been done in one step like this: vector <- c(6.41E3, 4.85E4, 1.6E5...). I'm not sure if this would make more sense or be more efficient for others a well, but I personally prefer this style of notation."
+
 ## Preliminaries
 
 ### Non-R materials
@@ -351,7 +361,7 @@ Confirm that what you just made was a vector.  (Hint: what "is" it?)
 
 Now let's do the exponent and save it to a vector u.bp.exp.
 ```{r}
-u.bp.exp <- c(1-7, 
+u.bp.exp <- c(-7, 
             -8, -8,-8,
             -10,-10,-10,-10,
             -9,

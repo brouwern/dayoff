@@ -76,13 +76,15 @@
 
 
 # Figure 3.8 page 81 / Figure 80 Dayhoff et al 1978 (?)
-## values multiplied by 10
+## values multiplied by 10 a specified in original pubs
 
 
-
+# load data extracted from pdf
 fi. <- here::here("data-raw","pevsner3_fig3_8.csv")
 pams <- read.csv(fi., stringsAsFactors = F)
 
+
+#format table properly
 j.drop <- c(1,2)
 i.drop <- c(1,2,
             nrow(pams)-1,
@@ -100,14 +102,23 @@ dim(pams)
 
 rownames(pams) <- as.vector(letter1)
 
-#Fix type
+#Fix typo in Pevsner
 pams["L","Cys"] <- 0
+
+# convert to numeric
 for(i in 1:ncol(pams)){
   pams[,i] <- as.numeric(pams[,i])
 }
 
+#set up labels
 pams <- cbind(t(letter3), pams)
 names(pams)[1] <- "code"
+
+
+# save raw matrix as data file
+usethis::use_r("pams")
+usethis::use_data(pams,overwrite = TRUE)
+
 
 
 pams2 <- pams[,-1]
@@ -123,7 +134,6 @@ mutablity.relative[order(mutablity.relative)]
 
 
 
-freq <- c(0.089,0.087,0.085,0.081,0.070,0.065,0.058,0.051,0.050,0.047,0.041,0.040,0.038,0.037,0.034,0.033,0.030,0.015,0.010)
 
 hist(freq)
 

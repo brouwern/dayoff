@@ -8,10 +8,10 @@
 #'
 #' @param tutorial name of tutorial to open as a quotes string.  Defaults to NULL and opens up a sample tutorial.
 #'
-#' @examples
+#' #@examples
 #'
 #' # Open up an example file.  To see a list of available tutorials use tutor_show()
-#' tutor_open()
+#' #tutor_open()
 #'
 #' @export
 
