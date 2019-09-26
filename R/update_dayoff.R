@@ -27,10 +27,12 @@ update_dayoff <- function(upgrade = "never",
      devtools::install_github("brouwern/dayoff",
                               upgrade = upgrade,
                               type = type)
+
+     rstudioapi::restartSession()
    }
 
 
-  rstudioapi::restartSession()
+
 }
 
 
