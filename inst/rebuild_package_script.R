@@ -4,9 +4,6 @@ devtools::build_vignettes()
 
 devtools::load_all(".")
 
-# check
-devtools::check() # = "check package" on GUI, = R CMD check?
-
 
 # pkgdown
 pkgdown::build_site()
@@ -16,10 +13,15 @@ ver <- desc::desc_get_version()
 new_ver <- usethis:::bump_version(ver = ver)["dev"]
 usethis:::use_description_field("Version", new_ver, overwrite = TRUE)
 
-
 # documents
 ## name space
 devtools::document(roclets=c('rd', 'collate', 'namespace'))
+
+
+
+# check
+devtools::check() # = "check package" on GUI, = R CMD check?
+
 
 
 system("git add .")
