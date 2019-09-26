@@ -420,24 +420,47 @@ Note that in figure 82 they multipled everything by 10000 to avoid writing decim
 ```
 
 
-In their notation, Dayhoff el calls the matrix of pams "A" and a single entry in the matrix Aij.  A11 is the 1st row of the 1st column.  A21 is the 2nd row, 1st column.  So, Ala's Aij value for transitioning to Arg would be the 2nd column, 1st row.
+In their notation, Dayhoff et al calls the matrix of pams "A", and a single entry in the matrix Aij.  A11 is the 1st row of the 1st column.  A21 is the 2nd row, 1st column.  So, Ala's Aij value for transitioning to Arg would be the 2nd row, 1st column (A21):
 
 ```{r}
 A[2,1]
 ```
 
+Because the matrix is symmetrics A21 is the same as A12
+```{r}
+A[1,2]
+```
+
+
 If this isn't clear look at the upper left part of the matrix
 
 ```{r, eval = F}
+
 tri_print(A[1:4,1:4],triangle = F)
+
 ```
 
-We can add up all the obsereved transitions for a single amino acid, which Dayhoff calls sum(Aij), though she uses the fancy sigma symbol, like this
+We can add up all the obsereved transitions for a single amino acid, which Dayhoff calls sum(Aij) for a given i, though she uses the fancy sigma symbol, like this
+```{r}
+sum(A[1,])
+```
+So, Ala was observed transitiona to another amino acid 3644 times.  
+
+
+Again, because the matrix is symmetric, sum(Aij) for a given i is the same as sum(Aij) for i = j.  So if i = 1, the first row, then j = 1, the first column.
 ```{r}
 sum(A[,1])
 ```
 
-So, Ala was observed transitiona to another amino acid 3644 times.  For Arg we'd do this
+
+For Arg, the second row, we'd do this to get the total number of observed changes:
+
+```{r}
+sum(A[2,])
+```
+
+or, equivalently
+
 
 ```{r}
 sum(A[,2])
@@ -472,23 +495,27 @@ What code calls up Trp from the mutability matrix?
 
 
 
-Dayhoff has one other elementd in the equation, lambda (backwards h-like thing), but she doesn't give us its value.  Its a **proportionality constant** to scale things properly.  We're going to have to try to figure it out ourselves.
+Dayhoff has one other element in the equation on page 348, lambda (backwards h-like thing), but she doesn't give us its value.  Its a **proportionality constant** to scale things properly.  We're going to have to try to figure it out ourselves.
 
-First let's do the easy math.  THe main part of the equation on page 348 is just:
+Aside: A key part of what Dayhoff did was use scaling factors and other tweaks to make the math easy to do and to end up with values with easy to interpret biological meaning.  For example, she sets the mutabiltiy of Alanine arbitrarily to 100 (arbitrary because she picked 100 and because she picked alanine; she could've used valine or something else as the standard).  Also, the values in most of the Figures are multipled by 10, 100, or 10,000 in order to make them easier to read.
+
+Ok, back to Dayhoff's equation for getting mutation frequencies, Mij.
+
+The equation is a bit complex, and it has this thing lambda which she didn't actually tell us what the value is.  First let's do the easy math to try to make progress on this.  The main part of the equation on page 348 is just:
 
 (mj*Aij)/sum(Aij).
 
-In words, this is multiple mutability by the number of transition Ala to Arg, then divide by the total number of times Ala transition to anything.
+In words, this is "multiple a mutability of an amino acid by the number of transitions it made to another amino acid, then divide by the total number of times the focal amino acid transitioned to anything.
 
-In reference to Ala transitioning to Arg, this is: 
-"multiple the mutability of Ala (mj) by the number of times Ala transitions to Arg (Aij) and divide that by the total number of times Ala transition into anything (sum(Aij)).
+In reference to the Ala transitioning to Arg, the equation would be: 
+"multiple the mutability of Ala (mj) by the number of times Ala transitions to Arg (A21) and divide that by the total number of times Ala transition into anything (sum(Aij) for i = 2).
 
 These quantities are
 ```{r}
 # m: mutability
-m.Ala <- mut[5, 2]
+m.ala <- mut[5, 2]
 
-# A.ala.arg number of transitiosn from ala to arg
+# A.ala.arg number of transtions from ala to art
 A.ala.arg <- A[2,1]
 
 # A.ala.sum: total transitions for ala
@@ -498,33 +525,35 @@ A.ala.sum <- sum(A[,1])
 I can the multiple this out, ignoring lambda
 ```{r}
 
-m.Ala*A.ala.arg/A.ala.sum
+m.ala*A.ala.arg/A.ala.sum
 
 ```
 
-Let's save this to a variable x to make it easier to read
+Let's save this to a variable x 
 
 ```{r}
-x <- m.Ala*A.ala.arg/A.ala.sum
+
+x <- m.ala*A.ala.arg/A.ala.sum
+
 ```
 
 
-This value does not match what is shown for the Ala to Arg transtion in Dayhoff's figure 82 because
+This value does not match what is shown for the Arg to Ala transtion in Dayhoff's figure 82 because
 
-* we need to multiple by 10000
+* we need to multiple by 10000, her arbitrary scaling factor
 * we need to figure out lambda
 
 
 The 10000 thing is annoying and we'll try out best to do the conversions in our heads.
 
-So, doing the conversion, Dayhoff have teh Ala to Arg transition as 1, so that's really 1/10000
+So, doing the conversion, Dayhoff have the Arg to Ala transition as 1, so that's really 1/10000
 
-To get things to match we need to figure out a value for lambdas to get an answer of 1/10000.  That is, what value of lambda will result in m.Ala*A.ala.arg/A.ala.sum = 1/10000?
+To get things to match we need to figure out a value for lambda to get an answer of 1/10000 when we use our focal equaion.  That is, what value of lambda will result in m.ala*A.ala.arg/A.ala.sum = 1/10000?
 
 
-Ignoring the finder details of the math, the answer is:
+Ignoring the finer details of the math, the answer is:
 ```{r}
-lambda <- (1/10000)/(m.Ala*A.ala.arg/A.ala.sum)
+lambda <- (1/10000)/(m.ala*A.ala.arg/A.ala.sum)
 ```
 
 This makes lambda pretty small.
@@ -535,55 +564,224 @@ lambda
 
 So, the transition is of Ala to Arg is
 ```{r}
-(lambda*m.Ala*A.ala.arg)/A.ala.sum
+lambda*(m.ala*A.ala.arg)/A.ala.sum
 ```
 
 We can check this against Dayhoff's matrx FIgure 82 by multiplying by 10000
 ```{r}
-10000*(lambda*m.Ala*A.ala.arg)/A.ala.sum
+10000*lambda*(m.ala*A.ala.arg)/A.ala.sum
 ```
 
 
-Ok, let's see if we can to this for the Ala to Asn transition, which is 4 in Dayhoff's table, or 4/10000 for us.  All the values are the same as above except A.ij, which we'll call A.ala.asn
+Ok, let's see if we can to this for the Ala to Cys transition, which is also 1 in Dayhoff's table, or 1/10000 for us.  All the values are the same as above except A.ij, which we'll call A.ala.asn
 
 ```{r}
-A.ala.asn <- A[3,1]
+A.ala.cys <- A[5,1]
 ```
 
 Now swap A.ala.asn in our previous math
 ```{r}
-lambda*m.Ala*A.ala.asn/A.ala.sum
+lambda*(m.ala*A.ala.cys)/A.ala.sum
 ```
 
-Now multiple by lambda
+Now multiple by 10000
 ```{r}
-lambda*10000*m.Ala*A.ala.asn/A.ala.sum
+10000*lambda*(m.ala*A.ala.cys)/A.ala.sum
 ```
 
-This is 3.6, and on Figure 82 for the M matrix Dayhoff has 4.  What's the difference?  Rounding.  Saving the result to an object M.ala.asn, which stands for an element of the M matrix for the ala to asn transition.
+This is 1.1, and on Figure 82 for the M matrix Dayhoff has 1.  What's the difference?  Rounding.  Saving the result to an object M.ala.asn, which stands for an element of the M matrix for the ala to asn transition.
 
 ```{r}
-M.ala.asn <- lambda*10000*m.Ala*A.ala.asn/A.ala.sum
+M.ala.cys <- 10000*lambda*(m.ala*A.ala.cys)/A.ala.sum
 ```
 
 Then we round with round()
 
 ```{r}
-round(M.ala.asn,0)
+round(M.ala.cys,0)
+```
+
+What happens if we use the Ala->Cys transition as our basis for back-calculationg lambda?
+
+```{r}
+lambda.ala.cys <- (1/10000)/(m.ala*A.ala.cys/A.ala.sum)
 ```
 
 
-Now, repeat these steps for the Ala to Asp transition.  This is just the next base down in the Ala column.  Make an object M.ala.Asp and round it.
+How would you test if my original lambda is the same as this new lambda.ala.cys?
+```{r}
+
+
+
+```
+
+
+How different are they?
+```{r}
+
+lambda - lambda.ala.cys
+
+```
+
+
+It turns out this small difference creates a problem for me down the road.  Let me check one more transition.  The transition from Ala to Tyr also has a value of 1 in Dayhoff matrix.  Let's calcualte lamda for that
 
 ```{r}
-# make A.ala.Asp
-# swap out the NA with the final calculation
-A.ala.Asp <- NA
+A.ala.tyr <- A[19,1]
+lambda.ala.tyr <- (1/10000)/(m.ala*A.ala.tyr/A.ala.sum)
+```
 
 
-# Make M.ala.Asp
+How does this compare to the others?
+```{r}
+lambda         - lambda.ala.tyr
+lambda.ala.cys - lambda.ala.tyr 
+```
+
+
+Let's do some more: the Ala to Phe transition is 1 on Figure 82:
+```{r}
+A.ala.phe <- A[14,1]
+lambda.ala.phe <- (1/10000)/(m.ala*A.ala.phe/A.ala.sum)
+
+A.ala.met <- A[13,1]
+lambda.ala.met <- (1/10000)/(m.ala*A.ala.met/A.ala.sum)
+
+
+A.ala.his <- A[9,1]
+lambda.ala.his <- (1/10000)/(m.ala*A.ala.his/A.ala.sum)
+```
+
+
+
+
+
+What I'm going to do is take the mean of these three values to try to better approximate what Dayhoff used.
+
+I can do this by hand
+```{r}
+lambdas <- c(lambda,lambda.ala.cys,lambda.ala.tyr,
+             lambda.ala.phe,lambda.ala.met,lambda.ala.his)
+lambda.mean <-sum(lambdas)/length(lambdas)
+
+```
+
+or with the mean() function
+
+```{r}
+lambda.mean <- mean(lambdas)
+```
+
+
+
+
+
+
+
+
+
+Let's try another transition, and compare lambda to lambda.mean: Ala to Gly, which is 21 on Figure 82:
+```{r}
+A.ala.gly <- A[8,1]
+```
+
+Here we have a problem though: the following code gives us 19.3, not 21
+```{r}
+10000*lambda*(m.ala*A.ala.gly)/A.ala.sum
+```
+
+
+Now we try lambda.mean
+```{r}
+10000*lambda.mean*(m.ala*A.ala.gly)/A.ala.sum
+```
+
+lambda.mean is a little closer, but not perfect.
+
+What if I calcualted lambda from the 
+```{r}
+A.ala.gly <- A[13,1]
+lambda.ala.gly <- (21/10000)/(m.ala*A.ala.gly/A.ala.sum)
+lambda.ala.gly
+
+```
+
+Confirm we get 21:
+```{r}
+10000*lambda.ala.gly*m.ala*A.ala.gly/A.ala.sum
+```
+
+
+So, I'm having a hard time trying to pin lambda down, and its making me made. The lambda I get for Ala->Gly is much bigger than all they others.  I can check this with a logical statement using >
+```{r}
+lambda.ala.gly > lambdas
+```
+
+
+I'm going to calcualte lambda for each transition of Ala.  
+
+First, I need all of Dayhoff's Ala data.  This is the entire 1st column of the matrix in Figure 82
+```{r}
+dayhoff.Ala <- c(9867,1,4,6,1,3,10,21,1,2,3,2,1,1,13,28,22,0,1,13)
+```
+It shoudl sum to 10,000.  Check this.
+
+```{r}
+
+```
+
+
+Don't worry about this code, just run it.
+
+```{r}
+dayhoff.Ala.withNA <- dayhoff.Ala
+dayhoff.Ala.withNA[which(dayhoff.Ala.withNA==0)] <- NA
+lambs <- rep(NA,length(dayhoff.Ala))
+
+for(i in 1:length(lambs)){
+  A.ala.i <- A[i,1]
+  dayhoff.i <- dayhoff.Ala.withNA[i]
+lambda.ala.i <- (dayhoff.i/10000)/(m.ala*A.ala.i/A.ala.sum)
+lambs[i] <- lambda.ala.i
+}
+
+#drop the 1st value
+lambs.noInf <- lambs[-1]
+
+
+```
+
+
+Look at the distribution of lambda values; there's lots of variation!
+```{r}
+hist(lambs.noInf)
+```
+
+Does lambda vary by the value in the matrix? Not overall, but the most variation is for when lambda = 1!
+```{r}
+plot(lambs ~ dayhoff.Ala[-1])
+abline(v = 1, col =2)
+```
+
+Now, I'm going to take the mean of all those lambdas
+```{r}
+lambda.mean <- mean(lambs.noInf, na.rm = T)
+```
+
+
+
+Now, repeat these steps for the Ala to Asp transition.  Make an object M.ala.Asp and round it.  Use lambda.mean and compare the value of M.ala.asp to Dayhoff's matrix in Figure 82.
+
+```{r}
+# make A.ala.Asp that contains the correct information from the A matrix
+# (A matrix is found in Figure 81)
 # swap out the NA with the final calculation
-M.ala.Asp <- NA
+A.ala.asp <- NA
+
+
+# Make M.ala.Asp, the mutation matrix
+# swap out the NA with the final calculation
+M.ala.asp <- NA
 ```
 
 
@@ -618,7 +816,7 @@ sum.Aij
 
 Looking at this could help; the following code "binds" the vector sum.Aij to the matrix A (I added an extra row of dahes to make it easier to read.
 
-```{r}
+```{r, eval = F}
 tri_print(rbind(A,rep("-",length(sum.Aij)),sum.Aij),triangle = F)
 ```
 
@@ -635,8 +833,8 @@ M[ , ] <- NA
 
 # loop over each column of A and apply the equation 
 ## on page 348 by column
-for(i in 1:ncol(A)){
-  M[ , i] <- (lambda*mut2$mutability[i]*A[,i])/sum.Aij[i]
+for(j in 1:ncol(A)){
+  M[ , j] <- (lambda.mean*mut2$mutability[j]*A[,j])/sum.Aij[j]
 }
 
 ```
@@ -654,50 +852,106 @@ M.round <- round(M.10k, 0)
 
 
 
-My values are a bit off and I'm nore sure why!  Doh!  I used an R program to scan the original data out of a PDF and I need to make sure that there were no errors (I also used the Pevsner version of the table and found 1 typo already, so perhaps there are ore)
+As noted above, ifyou compare the matrix M.round to figure 82, yy values are a bit off and I'm nore sure why!  Doh!  I used an R program to scan the original data out of a PDF and I need to make sure that there were no errors (I  used the Pevsner version of the table and found 1 typo already, so perhaps there are more).  More probable is that there's an error I'm commiting or an assumption I'm making that is wrong.  
+
+Compare for yourself the M.round matrix and the one in Figure 82, page 348.
+
+```{r, eval = F}
+tri_print(M.round, triangle = F)
+```
+
+This is ok but still not perfect!  Doh!  
+
+## Adding diagonal to M matrix
+
+Currently we have 0 along the diagonal.  Check this:
 
 ```{r}
-tri_print(M.round,triangle = F)
+
+
 ```
 
 
 
-Currently we have 0 along the diagonal.  Check this
-
-```{r}
-
-
-```
-
-
-
-According to Dayhoff the diagonal is Mij = 1-lambda*mj
+According to Dayhoff the diagonal is Mjj = 1-lambda*mj
 
 m is the mutability matrix.
 
 ```{r}
-Mij <- 1-lambda*mut2$mutability
+
+Mjj <- 1-lambda*mut2$mutability
+
 ```
 
 
-Whatever errors I have are amplified here.  I checked the mutability values already but need to re-check them.
+Whatever errors I have are amplified here.  
+
+
+A key aspect of the mutation matix in Figure 82 is that all the columns should sum to 1 (100%).  I'm going to check and instead of using the equation I just used (Mjj = 1-lambda*mj) I'm going to make sure the values all sum to 1.
+
+
+```{r}
+#Don't worry about the function, just run it
+Mjj <- 1 - apply(M,2,sum)
+```
+
+
 
 We can add the diagonal to our matrix M of mutation probablities like this:
 ```{r}
-diag(M) <- Mij
+
+diag(M) <- Mjj
+
+```
+
+Let's use data.frame to compare what I've worked up to the original Dayhoff matix
+
+```{r}
+M.10k <- M*10000
+M.round <- round(M.10k, 0)
+
+brouwer.vs.dayhoff <- data.frame(dr.brouwer = M.round[,1],
+           dayhoff = dayhoff.Ala)
 ```
 
 
-So, what we have here is a PAM1 mutation probability matrix.  See Pevsner and Dayhoff for the precise intepretation of this.  
+I can check the differnce like this
+```{r}
+brouwer.vs.dayhoff$dr.brouwer - brouwer.vs.dayhoff$dayhoff
+
+```
+
+The sum of each column *should* be approximatley 1, or 100%
+```{r}
+sum(M[,1])
+sum(M[,2])
+sum(M[,3])
+```
+
+ Let me use another R function which will allow me to check all the column sums.  Just run this.
+
+```{r}
+apply(M,2, sum)
+```
+
+
+I have no reason to doubt Dayhoff's data but I want to check what her columns sum to because I feel like I'm going nuts.  Here columns should sum to 10000.
+```{r}
+sum(dayhoff.Ala)
+```
+
+## So, after all of that, what do we have?
+
+So, what we have here is a PAM1 mutation probability matrix.  See Pevsner and Dayhoff for the precise intepretation of this.  Now we want to go from a mutation probability matrix to the scoring matrix.  First, we'll go from our starting point of PAM1 to PAM250.  
 
 
 
 ## From PAM1 to PAM250
 
-As discussed by Dayhoff and Pevsner PAM1 is usually converted to PAM250.  PAM1 represents transition probabilities over a short period of time (1 PAM) while more practically a longer period of time is more useful, like 250 PAMS.  (Don't worry about what a PAM is; is a relativel measure of evolutionary time.)
+As discussed by Dayhoff and Pevsner PAM1 is usually converted to PAM250.  PAM1 represents transition probabilities over a short period of time (1 PAM) while more practically a longer period of time is more useful, like 250 PAMS.  (Don't worry about what a PAM is; it is a relative measure of evolutionary time.)
 
 
-Converting from PAM1 to PAM250 is each.  We just multiple the matrix by itself.  Basically we multiple each element of the matrix by iteslf.
+Converting from PAM1 to PAM250 is easy  We just multiple the matrix by itself.  We won't worry about the details of this here; its due to a special kind of math that can be done on matrices.
 
 PAM2 would look like this, where %*% is a special tool for multiplying matices by each other.
 
@@ -710,8 +964,6 @@ Below is the upper left hand corner of PAM2
 ```{r}
 tri_print(round(PAM2[1:4,1:4],3),triangle = F)
 ```
-
-Challenge: can you figure out how to confirm the value for Ala to Ala?
 
 PAM10 would be like this
 
@@ -729,15 +981,10 @@ For the Ala->Ala transition in the upper left corner what this represents is Ala
 
 Getting to PAM250 would be a pain.  Luckily we use a package to do the matrix equivalent of raising the matrix to the 10th power.
 
-
-```{r}
-install.packages("matrixcalc")
-library(matrixcalc)
-```
-
 NOTE: Pevsner has a box showing how to do this and is totally wrong!
 
 ```{r}
+library(matrixcalc)
 PAM10.2 <- matrix.power(M, 10)
 ```
 
@@ -760,33 +1007,54 @@ M250 <- matrix.power(M, 250)
 ```
 
 
-Let's look at the upper left part of the matrix.  I've multipled it by 100 so it looks more like Dayhoff.  Still off by a bit
+Let's look at the upper left part of the matrix.  I've multipled it by 100 so it looks more like Dayhoff.  Unfortunately, the small errors I've been trying to fix above get amplified when I multiple the error-fille matrix 250 times!
 ```{r}
-tri_print(round(M250[1:4,1:4],2)*100,triangle = F)
+tri_print(round(M250[1:4,1:4],2)*100, triangle = F)
 ```
-
 
 There's  specific interpretation of this matrix.  See Pevsner and Dayhoff for how to interpret these values.
 
+
+```{r}
+apply(M250,2,sum)
+```
+
+
 ## Making the final matrix
 
-So far we're still working in terms of probabilities, eg, what the probablity Ala stays Ala over a "distance" of 250 PAMS?  What's the probablity that Ala transitions to Arg over 250 PAMs?
+So far we're still working in terms of probabilities, eg, what the probablity Ala stays Ala over a "distance" of 250 PAMS? (18% on my matrix, 13% on Dayhoff's)  What's the probablity that Ala transitions to Arg over 250 PAMs? (4% on mine, 3% on Dayhoff)
 
-We need a bit more math to get to the scoring matrix.  We'll gloss over the why of the math in order to just pratice R.
+We need a bit more math to get to the **scoring matrix** that's used for actual alignment..  We'll gloss over the why of the math in order to just pratice R.
 
 On page 351 Dayhoff has an equation 
 Rij = Mij/fi
 
 This is a "relatedness odds matrix", which is a fancier name for an alignment scoring matrix.  If you know gambling or statistics you might know about odds.  Don't worry about it for now.
 
-M is probabilty matrix, eg M250.  f is the relative frequency of each amino acids (freqs).  Let's do the math.  If you want a challenge, try to figure out how to do it yourself.  Key steop: putting the frequencies in the right order!
+M is a probabilty matrix, eg M250.  f is the relative frequency of each amino acids (freqs).  Let's do the math.  Let's use Dayhoff's exact numbers first
 
 ```{r}
+#from table 83
+Mij.ala.ala <- 13/100
+freq.ala <- 0.087
+
+round(10*log10(Mij.ala.ala/freq.ala),0)
+```
+
+
+
+
+
+
+Now for the whole matrix: Key step: putting the frequencies in the right order!
+
+```{r}
+#put freqs (Table 22) in the same order as matrix
 freqs2 <- freqs[order(freqs$aa), ]
 ```
 
 
-We nee a for loop again.  Just run this unless you want to root aroudn in teh details
+We need a for loop again.  Just run this unless you want to root aroudn in teh details
 ```{r}
 # make a matrix M for mutation probabilities, the same size as 
 # the original matrix A
@@ -797,8 +1065,8 @@ R250[ , ] <- NA
 
 # loop over each column of A and apply the equation 
 ## on page 348 by column
-for(i in 1:ncol(M250)){
-  R250[ , i] <- M250[,i]/(freqs2$frequencies[i])
+for(j in 1:ncol(M250)){
+  R250[ , j] <- M250[,j]/(freqs2$frequencies[j])
 }
 ```
 
@@ -812,5 +1080,10 @@ Let's round that off
 
 ```{r}
 PAM250.round <- round(R250, 0)
+```
+
+
+```{r}
+tri_print(PAM250.round, triangle = F)
 ```
 

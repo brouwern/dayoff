@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dayoff</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9005</span>
       </span>
     </div>
 
@@ -118,7 +118,7 @@
 <p>First, the function has to figure out where your copy of <em>dayoff</em> is located. This is done with the system.file() function.</p>
 <p>system.file() tells you where on your computur a package happens to be located. This can vary between computers, especially between Mac, PC and Linux.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="dt">package =</span> <span class="st">"dayoff"</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt; [1] "C:/Users/lisanjie/AppData/Local/Temp/Rtmp4Cjnnl/temp_libpath142c335a5d8e/dayoff"</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt; [1] "C:/Users/lisanjie/AppData/Local/Temp/Rtmp6bFdyW/temp_libpath339c21d97d6d/dayoff"</span></a></code></pre></div>
 <p>Many R packages have a folder within them called “extdata” (“external data”) to contain things not essential to the package’s functioning. I’ll save the file path for the package to an object called dayoff.path and then call the utlity function list.files() to see what’s in the package folder.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">dayoff.path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="dt">package =</span> <span class="st">"dayoff"</span>)</a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(dayoff.path)</a>
@@ -144,14 +144,13 @@
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">test.tutorial &lt;-<span class="st"> "02-03_alignment.Rmd"</span></a>
 <a class="sourceLine" id="cb7-2" title="2">tutor.file.path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(tutor.path,<span class="st">"/"</span>,test.tutorial)</a></code></pre></div>
 <p>We can double check that the file is available using file.exists()</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(tutor.file.path)</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(tutor.file.path)</a></code></pre></div>
 <p>We can then load the tutorial file by using a function called system, which allow us to specify a program (RStudio) and a file we want the program to act on.</p>
 <p>First we need to construct a character string that specifies the program and the file</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">system.string &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"RStudio"</span>, tutor.file.path)</a></code></pre></div>
 <p>Now we can call system() and the file should open up.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/system.html">system</a></span>(system.string)</a></code></pre></div>
-<p>This workflow is impleneted by the function tutor_open</p>
+<p>This workflow is implemented by the function tutor_open</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="../reference/tutor_open.html">tutor_open</a></span>()</a></code></pre></div>
 </div>
   </div>
