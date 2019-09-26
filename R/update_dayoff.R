@@ -19,9 +19,10 @@ update_dayoff <- function(upgrade = "never",
      message("Downloading dayoff")
      message("Note: the default is to not update packages that are already downloaded and to always use the binary version of a package")
 
-     if(update != "never"){
-       message("Since upgrade is not set to never, the status of other packages will be checked")
-     }
+     #if(update != "never"){
+     #   message("Since upgrade is not set to never,
+     #         the status of other packages will be checked")
+     #}
 
      devtools::install_github("brouwern/dayoff",
                               upgrade = upgrade,
