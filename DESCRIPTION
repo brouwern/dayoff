@@ -37,6 +37,7 @@ Imports:
     tufte,
     rJava,
     BiocManager,
-    rstudioapi
+    rstudioapi,
+	systemfonts
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
