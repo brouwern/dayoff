@@ -4,6 +4,8 @@ devtools::document(roclets=c('rd', 'collate', 'namespace'))
 devtools::load_all(".")
 devtools::check()
 pkgdown::build_site()
+usethis::use_dev_version()
+usethis::use_version("minor")
 
 system("git add .")
 system("git commit -m update")
