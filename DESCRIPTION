@@ -1,6 +1,6 @@
 Package: dayoff
 Title: Bioinformatics in R
-Version: 0.0.0.9009
+Version: 0.0.0.9010
 Authors@R: 
     person(given = "Nathan",
            family = "Brouwer",
