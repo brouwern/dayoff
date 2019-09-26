@@ -9,7 +9,7 @@ pkgdown::build_site()
 
 
 system("git add .")
-system("git commit -m package 'rebuild'")
+system("git commit -m 'x'")
 system("git push")
 
 
