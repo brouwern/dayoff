@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dayoff</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9003</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
       <h1>a 02) Loading tutorials from the dayoff package</h1>
                         <h4 class="author">Nathan Brouwer</h4>
             
-            <h4 class="date">2019-09-23</h4>
+            <h4 class="date">2019-09-26</h4>
       
       
       <div class="hidden name"><code>a02-loading_tutorials.Rmd</code></div>
@@ -118,7 +118,7 @@
 <p>First, the function has to figure out where your copy of <em>dayoff</em> is located. This is done with the system.file() function.</p>
 <p>system.file() tells you where on your computur a package happens to be located. This can vary between computers, especially between Mac, PC and Linux.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="dt">package =</span> <span class="st">"dayoff"</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt; [1] "C:/Users/lisanjie/AppData/Local/Temp/RtmpS2xbte/temp_libpath2504432d2d57/dayoff"</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt; [1] "C:/Users/lisanjie/AppData/Local/Temp/RtmpofXIEA/temp_libpath1c9828869d8/dayoff"</span></a></code></pre></div>
 <p>Many R packages have a folder within them called “extdata” (“external data”) to contain things not essential to the package’s functioning. I’ll save the file path for the package to an object called dayoff.path and then call the utlity function list.files() to see what’s in the package folder.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">dayoff.path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="dt">package =</span> <span class="st">"dayoff"</span>)</a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(dayoff.path)</a>
@@ -131,9 +131,13 @@
 <p>I’ve made a folder called “tutorials” which is not normally in an R package</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">tutor.path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(dayoff.path,<span class="st">"/tutorials"</span>)</a>
 <a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(tutor.path)</a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; [1] "_data_frame_by_hand-SCRIPT.R" "02-03_alignment.Rmd"         </span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; [3] "data_frame_by_hand.pdf"       "data_frame_by_hand.Rmd"      </span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; [5] "test_tutorial.Rmd"</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; [1] "_data_frame_by_hand-SCRIPT.R"          </span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; [2] "02-03_alignment.Rmd"                   </span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; [3] "data_frame_by_hand.pdf"                </span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt; [4] "data_frame_by_hand.Rmd"                </span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; [5] "data_frame_by_hand_problem_set-KEY.Rmd"</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; [6] "dayhoff_PAM_matrices.Rmd"              </span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt; [7] "test_tutorial.Rmd"</span></a></code></pre></div>
 <p>I’ve made a function that carries out this workflow automatically</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="../reference/tutor_show.html">tutor_show</a></span>()</a></code></pre></div>
 <p>The .Rmd or .R file within the tutorials folder can be loaded by constructing the proper file name</p>

@@ -1,0 +1,138 @@
+---
+title: "Data table by hand problem set"
+author: "Nathan Brouwer"
+date: "9/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 
+
+```{r}
+library(ggpubr)
+```
+
+
+
+## Step one: Make each column
+
+```{r, echo = F}
+# strain initials (eg, "Methanocalculus pumilus" = "MP")
+strain    <- c("MP","NB","MO","MH","SA","SM","PO")
+
+# Growth temperatures
+T.min     <- c( 25,  25,  40,  50,  57,  70,  80)
+T.opt     <- c( 35,  45,  60,  70,  80,  92,  105)
+T.max     <- c( 45,  55,  75,  80,  89,  98,  110)
+
+# Accession number; leave this code as is
+accession <- rep(NA, length(strain))
+
+# Length of 16sRNA gene in BP
+length.bp <- c(790,796,791,808,808,810,808)
+
+# Percent GC
+P.GC      <- c(55.4,57.8,59.8,62.3,64.1,66.5,68.9)
+
+# Melting temperature
+T.m       <- c(86.2,87.2,88.2,88.9,89.7,90.3,90.9)
+
+# References - leave this as is
+reference <-rep(NA, length(strain))
+
+
+```
+
+
+### Quality control
+
+In the chunk below, type a command to check the size of one of the objects you just made.
+```{r}
+
+```
+
+
+In the chunk below, type a command to check the type of data structure of the object you just made.
+```{r}
+
+```
+
+
+## Part 2: Build the dataframe
+
+Now, re-make Table 1 of Kimura et al (2013).
+
+Type in the code necessary to build that dataframe; assign it to an object called "kimuar"
+```{r}
+# Delete the "NA" and add the appropirate code
+kimura  <- data.frame(strain, 
+                      T.min, T.opt, T.max, 
+                      accession,
+                      length.bp, P.GC, T.m, 
+                      reference)
+```
+
+
+## Part 3: Make figure
+
+Re-make Figure 2 of Kimura et al (2013).  Include the following elements 
+
+* Data points
+* regression line
+* Correlation coefficient (will show up as "R"; Plot 2 actually has R^2)
+* P-value (created by same arguement as the correlation coefficient)
+
+The original Figure 2 has the sample size listed and some small error bars around the data points.  Don't worry about this.
+
+```{r, echo = F}
+#Note: making plots doesn't involve the assignment operator
+ggscatter(data = kimura,
+         y = "P.GC",
+         x = "T.m",
+         add = "reg.line",
+         size = "length.bp",
+         cor.coef = T)
+```
+
+## Mean length of 16S rRNA
+
+```{r}
+summary(kimura)
+```
+
+
+
+## Create new variable: T.m/length.bp
+
+
+```{r}
+summary(kimura)
+```
+
+```{r}
+mean.length.bp <- mean(kimura$length.bp)
+```
+
+
+
+
+```{r}
+kimura$T.m801 <- kimura$T.m/kimura$length.bp*mean.length.bp
+```
+
+
+
+## New plot: T.min versus T.max
+
+
+```{r}
+ggscatter(data = kimura,
+         y = "P.GC",
+         x = "T.m801",
+         add = "reg.line",
+         cor.coef = T)
+```
+

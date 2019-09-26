@@ -10,7 +10,7 @@ vs.new <- usethis:::bump_version(ver = vs.current)["dev"]
 usethis:::use_description_field("Version",vs.new, overwrite = T)
 
 system("git add .")
-system("git commit -m update")
+system("git commit -m package rebuild")
 system("git push")
 
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • dayoff</title>
+<title>Function to update dayoff package — update_dayoff • dayoff</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Function to update dayoff package — update_dayoff" />
+<meta property="og:description" content="Function to update dayoff package" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +56,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -123,132 +125,40 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Function to update dayoff package</h1>
+    
+    <div class="hidden name"><code>update_dayoff.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Function to update dayoff package</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>update_dayoff</span>(<span class='kw'>upgrade</span> <span class='kw'>=</span> <span class='st'>"never"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"binary"</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="aa_chars.html">aa_chars</a></code> </p>
-        </td>
-        <td><p>Characteristics of amino acids</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="aa_chars_subset.html">aa_chars_subset</a></code> </p>
-        </td>
-        <td><p>Characteristics of amino acids (subset)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dengueseq_fasta.html">dengueseq_fasta</a></code> </p>
-        </td>
-        <td><p>Dengue fever sequence in FASTA format stored as R object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="diag_show.html">diag_show()</a></code> </p>
-        </td>
-        <td><p>Print the diagonal of a matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fasta_cleaner.html">fasta_cleaner()</a></code> </p>
-        </td>
-        <td><p>Function to convert a FASTA file stored as an object into a vector</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="hShroom2.html">hShroom2</a></code> </p>
-        </td>
-        <td><p>Human Shoom 2 Fasta File</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="hShroom3.html">hShroom3</a></code> </p>
-        </td>
-        <td><p>Human Shroom 3 Fasta File</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mShroom3a.html">mShroom3a</a></code> </p>
-        </td>
-        <td><p>Mouse Shroom 3a Fasta File</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pams.html">pams</a></code> </p>
-        </td>
-        <td><p>Point-accepted mutation (PAM) data matrix from Dayoff et al. 1978</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="score_alignment.html">score_alignment()</a></code> </p>
-        </td>
-        <td><p>Score a simple alignment</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="shroom_table.html">shroom_table</a></code> </p>
-        </td>
-        <td><p>Table of shroom accessions numbers circa 2006</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sShroom.html">sShroom</a></code> </p>
-        </td>
-        <td><p>Sea Urchin Shoom Fasta File</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tri_print.html">tri_print()</a></code> </p>
-        </td>
-        <td><p>Print the lower or upper triangular part of a matrix  flextable</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tutor_open.html">tutor_open()</a></code> </p>
-        </td>
-        <td><p>Open a specified tutorial file contained within the package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tutor_show.html">tutor_show()</a></code> </p>
-        </td>
-        <td><p>Show the tutorials currently available for the dayoff package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="update_dayoff.html">update_dayoff()</a></code> </p>
-        </td>
-        <td><p>Function to update dayoff package</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>upgrade</th>
+      <td><p>Arugement to pass to devtools::install_github: should dependencies be upgrades; defaults to "never</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>Arguement to pass to devtools::install_github: should binary packages be downloaded even if more recent source packages are available.  Defaults to "binary."</p></td>
+    </tr>
     </table>
-  </div>
 
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
     </ul>
+
   </div>
 </div>
 
