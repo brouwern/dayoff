@@ -22,7 +22,7 @@ Alignments are ubiquitous in molecular biology, phylogenetics, and genomics.  Fo
 
 Because there are so many ways to align two sequences there is a need to be able to judge how "good" a given alignment is a rank the quality of many alignments.  Key to this are alignment scoring matrices such as **BLOSUM** and **PAM** matrices.  The matrices are based on empirical data about how frequently differnt mutations have occurred between sequences.  
 
-There are a number of steps required to calcualte these matrices.  The following tutorial will step you through key aspects of constructing Margaret Dayhoff's PAM matrices.  The focus here will be on the R operations need to reconstruct the matrices.  However, seeing how Dayhoff moved from raw data to a probablity matrix, and finally her scoring matrix should help you bettr understand how they work.
+There are a number of steps required to calcualte these matrices.  The following tutorial will step you through key aspects of constructing Margaret Dayhoff's PAM matrices.  The focus here will be on the R operations need to reconstruct the matrices.  However, seeing how Dayhoff moved from raw data to a probablity matrix, and finally her scoring matrix should help you better understand how they work.
 
 
 ## Key steps
@@ -134,11 +134,12 @@ For some annoying reasons data.frames and matrices don't behave the same in R.  
 ```{r}
 
 A <- as.matrix(A)
+rownames(A) <- colnames(A)
 
 ```
 
 We can use the dayoff function tri_print() to look at the matrix
-```{r}
+```{r, eval = FALSE}
 
 tri_print(A)
 
@@ -164,7 +165,7 @@ A <- A + t(A)
 ```
 
 Check out the new matrix.  Can you tell why I am calling it "symmetric" ?
-```{r}
+```{r, eval = F}
 tri_print(A, triangle = F)
 ```
 
@@ -427,7 +428,7 @@ A[2,1]
 
 If this isn't clear look at the upper left part of the matrix
 
-```{r}
+```{r, eval = F}
 tri_print(A[1:4,1:4],triangle = F)
 ```
 

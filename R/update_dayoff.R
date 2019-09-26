@@ -12,7 +12,7 @@
 update_dayoff <- function(upgrade = "never",
                           type = "binary"){
   installed <- rvcheck::check_github(pkg = "brouwern/dayoff")$installed_version
-  github <- rvcheck::check_github(pkg = "brouwern/dayoff")$latest_version
+  github    <- rvcheck::check_github(pkg = "brouwern/dayoff")$latest_version
 
 
    if(installed != github){
