@@ -76,20 +76,20 @@ tutor_show()
 
 
 The .Rmd or .R file within the tutorials folder can be loaded by constructing the proper file name
-```{r}
+```{r, eval = F}
 test.tutorial <- "02-03_alignment.Rmd"
 tutor.file.path <- paste0(tutor.path,"/",test.tutorial)
 ```
 
 We can double check that the file is available using file.exists()
-```{r}
+```{r, eval = F}
 file.exists(tutor.file.path)
 ```
 
 We can then load the tutorial file by using a function called system, which allow us to specify a program (RStudio) and a file we want the program to act on.
 
 First we need to construct a character string that specifies the program and the file
-```{r}
+```{r, eval = F}
 system.string <- paste("RStudio", tutor.file.path)
 ```
 
@@ -98,7 +98,7 @@ Now we can call system() and the file should open up.
 system(system.string)
 ```
 
-This workflow is impleneted by the function tutor_open
+This workflow is implemented by the function tutor_open
 ```{r, eval = F}
 tutor_open()
 ```

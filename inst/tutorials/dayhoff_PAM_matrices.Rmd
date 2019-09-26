@@ -603,7 +603,7 @@ mut2$aa == colnames(A)
 
 
 
-A key part of this equation on page 348 is the sum of all of the observed mutations, sum(Aij).  For Ala, this is the sum of the first column.  We don't want to have to do this individually for each aa, so we can use a special R function to repeat the math for us.  Don't worry how this work, but do check what the result sum.Aij looks like
+A key part of this equation on page 348 is the sum of all of the observed mutations, sum(Aij).  For Ala, this is the sum of the first column.  We don't want to have to do this individually for each aa, so we can use a special R function to repeat the math for us.  Don't worry how this works, but do check what the result sum.Aij looks like
 
 ```{r}
 sum.Aij <- apply(A,2,sum)
@@ -635,7 +635,7 @@ M[ , ] <- NA
 # loop over each column of A and apply the equation 
 ## on page 348 by column
 for(i in 1:ncol(A)){
-  M[ , i] <- lambda*A[,i]*mut2$mutability[i]/sum.Aij[i]
+  M[ , i] <- (lambda*mut2$mutability[i]*A[,i])/sum.Aij[i]
 }
 
 ```

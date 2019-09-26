@@ -14,6 +14,7 @@ update_dayoff <- function(upgrade = "never",
   installed <- rvcheck::check_github(pkg = "brouwern/dayoff")$installed_version
   github <- rvcheck::check_github(pkg = "brouwern/dayoff")$latest_version
 
+
    if(installed != github){
      message("Downloading dayoff")
      message("Note: the default is to not update packages that are already downloaded and to always use the binary version of a package")
@@ -26,6 +27,9 @@ update_dayoff <- function(upgrade = "never",
                               upgrade = upgrade,
                               type = type)
    }
+
+
+  rstudioapi::restartSession()
 }
 
 
