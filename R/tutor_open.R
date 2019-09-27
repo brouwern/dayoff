@@ -34,6 +34,7 @@ tutor_open <- function(tutorial = NULL){
 
 
   message("Opening: ",tutor.file.path)
+  message("If you want to save your work save the file in a new location!")
 
 
   #system.string <- paste("RStudio", tutor.file.path)

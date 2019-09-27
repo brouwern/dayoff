@@ -4,7 +4,7 @@ author: "Nathan Brouwer"
 date: "9/24/2019"
 output: html_document
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -739,10 +739,14 @@ dayhoff.Ala.withNA[which(dayhoff.Ala.withNA==0)] <- NA
 lambs <- rep(NA,length(dayhoff.Ala))
 
 for(i in 1:length(lambs)){
+  
   A.ala.i <- A[i,1]
+  
   dayhoff.i <- dayhoff.Ala.withNA[i]
-lambda.ala.i <- (dayhoff.i/10000)/(m.ala*A.ala.i/A.ala.sum)
-lambs[i] <- lambda.ala.i
+  
+  lambda.ala.i <- (dayhoff.i/10000)/(m.ala*A.ala.i/A.ala.sum)
+  
+  lambs[i] <- lambda.ala.i
 }
 
 #drop the 1st value
@@ -834,7 +838,9 @@ M[ , ] <- NA
 # loop over each column of A and apply the equation 
 ## on page 348 by column
 for(j in 1:ncol(A)){
-  M[ , j] <- (lambda.mean*mut2$mutability[j]*A[,j])/sum.Aij[j]
+  
+  M[ , j] <- (lambda.mean*mut2$mutability[j] * A[,j]) / sum.Aij[j]
+  
 }
 
 ```

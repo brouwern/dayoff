@@ -100,7 +100,7 @@ max.P.GC <- NA
 
 Now, re-make Table 1 of Kimura et al (2013).
 
-Type in the code necessary to build that dataframe; assign it to an object called "kimuar"
+Type in the code necessary to build that dataframe; assign it to an object called "kimura"
 
 ```{r}
 # Delete the "NA" and add the appropirate code
@@ -152,9 +152,9 @@ Now add teh arguement size = "length.bp" so that the size of the points is scale
 ```
 
 
-## Gra of length.bp
+## Graph of length.bp vs T.m
 
-Create a graph that shows the relationship between T. and length.bp
+Create a graph that shows the relationship between T.m and length.bp
 
 ```{r}
 
