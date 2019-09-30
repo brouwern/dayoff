@@ -17,6 +17,7 @@ Suggests:
 VignetteBuilder: knitr
 Imports: 
     flextable,
+    rentrez,
     rvcheck,
     usethis,
     desc,
