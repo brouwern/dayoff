@@ -1,8 +1,23 @@
+devtools::load_all(".")
+
 # vignettes
 devtools::clean_vignettes()
 devtools::build_vignettes()
 
-devtools::load_all(".")
+
+
+
+# clean up tutorial knitr files
+dir. <-here::here("inst/tutorials")
+fi. <- here::here("inst/tutorials/AC04-01-vectors.Rmd")
+list.dirs(dir.)
+file.exists(fi.)
+
+subdirs.all  <- list.dirs(dir.,recursive = F,full.names = F)
+files.html <- list.files(dir.,pattern = "html")
+file.remove(here::here("inst/tutorials",files.html))
+unlink(here::here("inst/tutorials",subdirs.all), recursive = T)
+
 
 
 # pkgdown

@@ -4,7 +4,7 @@ author: "Avril Coghlan, adapted by Nathan Brouwer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{DNA descriptive statics - Part 1}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -15,7 +15,8 @@ editor_options:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  warnings = FALSE
+  warnings = FALSE,
+  cache = TRUE
 )
 ```
 
@@ -24,7 +25,7 @@ knitr::opts_chunk$set(
 
 ### Note on the biology in this section
 
-Some of the biology in this tutorial appears to be out of date.  Specifically, research on unusual frequencies of DNA "words" does not appear to be much current interest in bioinformatics and genomics.  (In contrast, methlation of bases within certain DNA words is being worked on.)  The examples are still good for practicing R skills.
+Some of the biology in this tutorial appears to be out of date.  Specifically, research on the biological basis of unusual frequencies of DNA "words" does not appear to be much current interest in bioinformatics and genomics.  (In contrast, methylation of bases within certain DNA words is being worked on.)  The examples are still good for practicing R skills.
 
 
 ### Vocabulary
@@ -39,25 +40,40 @@ seqinr::GC()
 seqinr::count()
 
 
+## Preliminaries
+
+```{r}
+
+library(seqinr)
+library(dayoff)
+
+```
+
+
+
 ## Converting DNA from FASTA format
 
 In a previous exercise we downloaded and examined DNA sequence in the FASTA format. The sequence we worked with is actually stored as a data file within this package and can be brought into memory using the data() command
 
 ```{r}
-data("dengueseq_vector_fasta")
+
+data("dengueseq_fasta")
+
 ```
 
 We can look at this with the str() command
 
 ```{r}
-str(dengueseq_vector_fasta)
+
+
+
 ```
 
 This isn't in a format we can actually work with so we'll use the function fasta_cleaner()
 
 ```{r}
 header. <- ">NC_001477.1 Dengue virus 1, complete genome"
-dengueseq_vector <- fasta_cleaner(dengueseq_vector_fasta, header = header.)
+dengueseq_vector <- fasta_cleaner(dengueseq_fasta)
 ```
 
 
@@ -75,12 +91,12 @@ We can see the first one like this
 dengueseq_vector[1]
 ```
 
-The second onelike this
+The second one like this
 ```{r}
 dengueseq_vector[2]
 ```
 
-THe first and second like this
+The first and second like this
 ```{r}
 dengueseq_vector[1:2]
 ```
@@ -113,7 +129,7 @@ table(dengueseq_vector)
 ```
 
 
-This means that the DEN-1 Dengue virus genome sequence has 3426 As occuring throughout the genome, 2240 Cs, and so forth.
+This means that the DEN-1 Dengue virus genome sequence has 3426 As occurring throughout the genome, 2240 Cs, and so forth.
 
 ### GC Content of DNA
 
@@ -146,14 +162,18 @@ To find the number of occurrences of DNA words of a particular length, we can us
 The count() function only works with lower-case letters, so first we have to use the tolower() function to convert our upper class genome to lower case
 
 ```{r}
+
 dengueseq_vector <-tolower(dengueseq_vector)
+
 ```
 
 Now we can look for words. For example, to find the number of occurrences of DNA words that are 1 nucleotide long in the sequence dengueseq_vector, we type:
 
 
 ```{r}
+
 seqinr::count(dengueseq_vector, 1)
+
 ```
 
 
@@ -205,7 +225,7 @@ denguetable_2 <- sort(denguetable_2)
 barplot(denguetable_2)
 ```
 
-R will automatically try to optimize the appearance of the labels on the greaph so you may not see all of them; no worries.
+R will automatically try to optimize the appearance of the labels on the graph so you may not see all of them; no worries.
 
 
 R can also make pie charts.  Piecharts only really work when there are a few items being plots, like the four bases.
@@ -264,4 +284,9 @@ Hint: look at the help page for the GC() function to find out how it deals with 
 1. How many of each of the four nucleotides A, C, T and G are there in the complement of the Mycobacterium leprae TN genome sequence?  *Hint*: you will first need to search for a function to calculate the complement of a sequence. Once you have found out what function to use, remember to use the help() function to find out what are the arguments (inputs) and results (outputs) of that function. How does the function deal with symbols other than the four nucleotides A, C, T and G? Are the numbers of As, Cs, Ts, and Gs in the complementary sequence what you would expect?
 1. How many occurrences of the DNA words CC, CG and GC occur in the Mycobacterium leprae TN genome sequence?
 1. How many occurrences of the DNA words CC, CG and GC occur in the (i) first 1000 and (ii) last 1000 nucleotides of the Mycobacterium leprae TN genome sequence?
-How can you check that the subsequence that you have looked at is 1000 nucleotides long?
+1.How can you check that the subsequence that you have looked at is 1000 nucleotides long?
+
+```{r}
+
+```
+

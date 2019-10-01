@@ -30,7 +30,7 @@ library(ggpubr)
 
 ## Step one: Make each column
 
-Read the data off of the original Table 1 and assign them to the objects put in place below.  Delete the NA. 
+Read the data off of the original Table 1 and assign them to the objects put in place below.  Delete the NAs; these as placeholders for you to put your code.  However, do leave the NAs for "accession" and "reference"; this will create a column of NAs that will servve as a placeholder (in the future I'll probably type these up myself but haven't yet). 
 
 ```{r, echo = F}
 # strain initials (eg, "Methanocalculus pumilus" = "MP")
@@ -42,6 +42,9 @@ T.opt     <- NA
 T.max     <- NA
 
 # Accession number; leave this code as is
+## You don't have to put anything here
+## this will help the table have the same
+## number of columns as the original
 accession <- NA
 
 # Length of 16sRNA gene in BP
@@ -55,6 +58,8 @@ T.m       <- NA
 
 # References - leave this as is
 reference <- NA
+## You don't have to put anything here
+## (same situation as accession)
 
 
 ```

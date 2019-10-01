@@ -1,0 +1,49 @@
+---
+title: "c 01)Downloading NCBI data by hand"
+author: "Avril Coghlan, adapted by Nathan Brouwer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{c 01)Downloading NCBI data by hand}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warnings = FALSE,
+  cache = TRUE
+)
+```
+
+### Retrieving genome sequence data via the NCBI website
+
+You can easily retrieve DNA or protein sequence data by hand from the NCBI Sequence Database via its website www.ncbi.nlm.nih.gov.
+
+The Dengue DEN-1 DNA sequence is a viral DNA sequence, and as mentioned above, its NCBI accession is NC_001477. To retrieve the DNA sequence for the Dengue DEN-1 virus from NCBI, go to the NCBI website, type “NC_001477” in the Search box at the top of the webpage, and press the “Search” button beside the Search box.
+
+On the results page you will see the number of hits to “NC_001477” in each of the NCBI databases on the NCBI website. There are many databases on the NCBI website, for example, the “PubMed” data contains abstracts from scientific papers, the “Nucleotide” database contains DNA and RNA sequence data, the “Protein” data contains protein sequence data, and so on. The picture below shows what the results page should look like for your NC_001477 search. As you are looking for the DNA sequence of the Dengue DEN-1 virus genome, you expect to see a hit in the NCBI Nucleotide database, and indeed there is hit in the Nucleotide database (indicated by the “1” beside the icon for the Nucleotide database):
+
+
+
+To look at the one sequence found in the Nucleotide database, you need to click on the icon for the NCBI Nucleotide database on the results page for the search:
+
+)
+
+When you click on the icon for the NCBI Nucleotide database, it will bring you to the record for NC_001477 in the NCBI Nucleotide database. This will contain the name and NCBI accession of the sequence, as well as other details such as any papers describing the sequence:
+
+( image3 unvailable)
+
+To retrieve the DNA sequence for the DEN-1 Dengue virus genome sequence as a FASTA format sequence file, click on “Send” at the top right of the NC_001477 sequence record webpage, and then choose “File” in the pop-up menu that appears, and then choose FASTA from the “Format” menu that appears, and click on “Create file”.
+
+A box will pop up asking you what to name the file, and where to save it. You should give it a sensible name (eg. “den1.fasta”) and save it in a place where you will remember (eg. in the “My Documents” folder is a good idea):
+
+
+
+You can now open the FASTA file containing the DEN-1 Dengue virus genome sequence using WordPad (***or another text editor such as Notepad++) on your computer. To open WordPad, click on “Start” on the bottom left of your screen, click on “All Programs” in the menu that appears, and then select “Accessories” from the menu that appears next, and then select “WordPad” from the menu that appears next. WordPad should start up. In Wordpad, choose “Open” from the “File” menu. The WordPad “Open” dialog will appear. Set “Files of type” to “All Documents” at the bottom of the WordPad “Open” dialog. You should see a list of files, now select the file that contains the DEN-1 Dengue virus sequence (eg. “den1.fasta”). The contents of the FASTA format file containing the Dengue DEN-1 sequence should now be displayed in WordPad:
+
+

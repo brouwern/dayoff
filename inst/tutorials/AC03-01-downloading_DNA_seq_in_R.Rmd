@@ -1,21 +1,22 @@
 ---
-title: "Downloading DNA sequences"
+title: "Downloading DNA sequences with R"
 author: "Dr. Avril Coghlan, adapted by Nathan Brouwer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Downloading DNA sequences with R}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  warnings = FALSE
+  warnings = FALSE,
+  cache = TRUE
 )
 ```
 
@@ -72,6 +73,7 @@ According to Wikipedia
 
 ```{r}
 library(dayoff)
+library(rentrez)
 ```
 
 

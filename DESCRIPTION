@@ -18,6 +18,7 @@ VignetteBuilder: knitr
 Imports: 
     flextable,
     rentrez,
+    qpdf,
     rvcheck,
     usethis,
     desc,
