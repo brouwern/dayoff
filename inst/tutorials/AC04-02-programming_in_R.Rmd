@@ -17,12 +17,12 @@ This is a modification of ["DNA Sequence Statistics (1)"](https://a-little-book-
 
 ## Vocab
 
-for loop
-curly brackets
+* for loop
+* curly brackets
 
-for
-seq
-plot
+* for
+* seq
+* plot
 
 
 ## Basic programming in R

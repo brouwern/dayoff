@@ -11,7 +11,8 @@ tutor_show <- function(){
   tutor.path <- paste0(dayoff.path,"/tutorials")
   print(paste("Files in:", tutor.path))
   print("RMarkdown (.Rmd) files:")
-  data.frame(file = list.files(tutor.path,pattern = ".Rmd$"))
-  cat("\n R script (.R) files:")
-  data.frame(file  = list.files(tutor.path,pattern = ".R$"))
+  print(data.frame(file = list.files(tutor.path,pattern = "[R][m][d]$")))
+
+   cat("\n R script (.R) files:")
+  print(data.frame(file  = list.files(tutor.path,pattern = "[R]$")))
 }

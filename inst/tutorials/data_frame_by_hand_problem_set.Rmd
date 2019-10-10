@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 SAVE THIS FILE TO A SAFE PLACE WHERE YOU CAN RELOCATE IT
 
-In this exercise we will rebuild a data table and figure in a paper by Kimura et al. "Growth temperatures of archaeal communities can be estimated from the guanine‐plus‐cytosine contents of 16 S rRNA gene fragments".  The paper can be downloaded from https://doi.org/10.1111/1758-2229.12035
+In this exercise we will rebuild a data table and figure in a paper by Kimura et al. "Growth temperatures of archaeal communities can be estimated from the guanine‐plus‐cytosine contents of 16 S rRNA gene fragments".  The paper can be downloaded from https://doi.org/10.1111/1758-2229.12035 .  Not that the article is paywalled so that if you are not on campus when you access it you will have to first log in to my.pitt.edu and then access the paper via the library.
 
 
 ## Preliminaries

@@ -2,8 +2,15 @@ pandoc: '2.6'
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
-  a01-preface: a01-preface.html
-  a02-loading_tutorials: a02-loading_tutorials.html
+  a01-preface_to_dayhoff: a01-preface_to_dayhoff.html
+  a02-loading_dayoff_tutorials: a02-loading_dayoff_tutorials.html
+  b01-organization_of_package_AC01: b01-organization_of_package_AC01.html
+  b02-downloading_R_AC01: b02-downloading_R_AC01.html
+  b03-installing_RStudio_AC01: b03-installing_RStudio_AC01.html
+  b04-installing_packages_in_RStudio_AC01: b04-installing_packages_in_RStudio_AC01.html
+  b05-installing_bioconductor_AC01: b05-installing_bioconductor_AC01.html
+  b06-brief_intro_to_R_AC01: b06-brief_intro_to_R_AC01.html
+  c01_unprot_by_GUI-AC07: c01_unprot_by_GUI-AC07.html
   x-creating_a_package: x-creating_a_package.html
   y-building_a_package: y-building_a_package.html
   z-build_and_rebuild_package: z-build_and_rebuild_package.html

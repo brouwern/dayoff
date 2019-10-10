@@ -1,0 +1,123 @@
+---
+title: "Simulating sequences to get an EVD"
+author: "Nathan Brouwer"
+date: "10/9/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Figure 4.14 in Pevsner is an idealized curve based on equations that exactly describe the the normal distribution and the extreme value distribution (EVD).  Ther following code will run simluations to create an EVD
+
+
+## Preliminaries
+
+
+```{r}
+library(Biostrings)
+```
+
+
+```{r}
+#1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6        
+#A,  C,D,E,F,G,H,I,  K,L,M,N,  P,Q,R,S,T,  V,W,  Y
+#A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z
+LETTERS[c(2,10,15,21,24,26)]
+not.an.aa <- c(2,10,15,21,24,26)
+aas <- LETTERS[-not.an.aa]
+```
+
+
+```{r}
+
+
+
+rand.num <- runif(n = 100,min = 1, max = 20)
+rand.num <- round(rand.num)
+aas[rand.num]
+
+rand_seq_aa <- function(n){
+  aas <- LETTERS[-not.an.aa]
+  rand.num <- runif(n = n,min = 1, max = 20)
+  rand.num <- round(rand.num)
+  rand.seq <- aas[rand.num]
+  return(rand.seq)
+}
+
+
+
+seq.length <- 1000
+seq.n <- 1000
+random.seqs <- matrix(data = NA, nrow = seq.length, ncol =seq.n)
+
+for(i in 1:ncol(random.seqs)){
+  random.seqs[,i] <- rand_seq_aa(n = seq.length)
+}
+
+dim(random.seqs)
+
+shrm <- c("MKTPENLEEPSATPNPSRTPTERFVYLEALLEGGAPWGFTLKGGLERGEPLIISKIEEGGKADSVSSGLQAGDEVIHINEVALSSPRREAVSLVKGSYKTLRLVVRRDVCAAPGHADPGT")
+
+nchar(shrm)
+
+nchar(shrm) == seq.length
+colnames(random.seqs) <- paste0("r.seq",1:1000)
+
+
+
+colnames(random.seqs[,1:5])
+head(random.seqs[,1:5])
+
+
+random.seqs.score <- rep(NA,seq.length)
+
+for(i in 1:ncol(random.seqs)){
+  
+  rand.seq.i <- paste(random.seqs[,i], sep = "",collapse = "")
+  cat("\n")
+  print(i)
+  print(substr(rand.seq.i,1,20))
+  score.i    <- pairwiseAlignment(shrm,
+                                  rand.seq.i,
+                                  type = "local",
+                                  gapOpening=1000, 
+                                  substitutionMatrix  = "BLOSUM50",
+                                  gapExtension=1,
+                                  scoreOnly  = T)
+  
+  random.seqs.score[i] <- score.i
+}
+
+
+scores.mean <- mean(random.seqs.score)
+scores.med <- median(random.seqs.score)
+
+
+#this code is a bit deep
+## code originally from https://www.statmethods.net/graphs/density.html
+## but its not that well explained either
+hist(random.seqs.score,breaks = 20)
+score.hist <- hist(random.seqs.score)
+abline(v = scores.mean, col = 2)
+abline(v = scores.med, col = 3)
+
+scores.sd  <- sd(random.seqs.score)
+score.min  <- min(random.seqs.score)
+score.max  <- max(random.seqs.score)
+scores.seq <- c(score.min:score.max)
+
+shapiro.test(random.seqs.score)
+
+yfit<-dnorm(scores.seq,
+            mean = scores.mean,
+            sd=scores.sd)
+
+yfit <- yfit*diff(score.hist$mids[1:2])*length(random.seqs.score)
+lines(scores.seq, yfit, col="blue", lwd=2)
+
+```
+
+

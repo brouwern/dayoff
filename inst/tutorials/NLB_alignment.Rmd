@@ -1,8 +1,26 @@
 ---
-output: html_document
+title: "Alignments and matrices"
+author: "Nathan Brouwer"
+date: "`r Sys.Date()`"
+output: rmarkdown::pdf_document
+vignette: >
+  %\VignetteIndexEntry{Alignments and matrices"}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
 ---
+
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warnings = FALSE,
+  cache = TRUE
+)
+```
 
 ## Introduction 
 

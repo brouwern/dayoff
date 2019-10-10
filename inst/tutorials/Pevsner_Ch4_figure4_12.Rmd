@@ -1,0 +1,675 @@
+---
+title: "Pevsner Chapter 3: BLAST figures"
+author: "Nathan Brouwer"
+date: "10/8/2019"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval= TRUE, include = TRUE, fig.height = 2.25, 
+                      warnings = F,message = F)
+par(mar = c(2, 2, 2, 1))
+```
+
+
+
+## Preliminaries
+
+We need the Biostrings package and the BLOSUM62 matrix (BLOSUM is an alginment scoring systems that was created using a different apporach but has the same goal as PAM matrices)
+
+
+```{r}
+# What is Biostrings?
+# Where is located prior to running library?
+# What changes when I run library?
+
+library(Biostrings)
+
+# The BLOSUM62 is stored as an R object within Biostrings
+## The data() function loads it into memory.
+data("BLOSUM62")
+BLOSUM62
+```
+
+
+## BLAST Word list
+
+R has a built-in list of all letter
+```{r}
+LETTERS
+```
+
+Not all letters have amino acids
+```{r}
+LETTERS[c(2,10,15,21,24,26)]
+```
+
+
+```{r}
+# What is not.an.aa?
+not.an.aa <- c(2,10,15,21,24,26)
+```
+
+
+I can use "negative indexing" to remove letters that don't correspond to an amino acid.  Using negative indexing here is easier than the alternative.  
+```{r}
+# What would the alternative to negative indexing be?
+aas <- LETTERS[-not.an.aa]
+```
+
+
+
+I want to make a list of ALL possible BLAST words.  
+
+How many BLAST words are possible?  
+
+I can use a fancy R function expand.grid() to make this word list.  I don't expect you to know how to use this function.
+
+```{r}
+words.list.all <- expand.grid(let1 = aas,
+                              let2 = aas,
+                              let3 = aas,
+                       stringsAsFactors = F)
+```
+
+What have I done here?
+
+
+
+How many unique words are there?
+```{r}
+n.words <- nrow(words.list.all)
+
+```
+
+
+
+## Creating word list from query
+
+Pevsner works with the sequence of human beta globin subunit B.
+https://www.ncbi.nlm.nih.gov/protein/4504349
+
+```{r}
+#you may have to install the rentrez package
+## install.packates(rentrez)
+# load library
+library(rentrez)
+
+#download sequence( this is also pasted below)
+fasta.out <- entrez_fetch(db = "protein",    # ?
+                        id = "NP_000509.1",  # ?
+                        rettype = "fasta")   # ?
+
+
+```
+
+
+The FASTA file provides this sequence, which I'm putting into a vector
+
+
+```{r}
+
+hbb <- c("MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLG
+AFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVAN
+ALAHKYH")
+
+nchar(hbb)
+
+```
+
+
+Remove the slash n
+```{r}
+
+hbb <- gsub("\n","", hbb)
+
+```
+
+
+
+Split raw character string into vector of characters
+
+```{r}
+hbb.split.list <- strsplit(hbb,"")
+is(hbb.split.list)
+
+#raw output is list; convert to vector
+hbb.split.vect <- unlist(hbb.split.list)
+```
+
+
+Create the list of words in the gene.  Words have 3 letters, so I want to build up my database of words from the first three amino acids (MVH) to the last 3 amnio acids (KYH).  Its easy for me to get the total number of aminoc acids with length, but I need to do a little math (length(x)-3) to make my code stop at the last full word.
+
+First some prep
+```{r}
+# Total length of hbb polypeptide
+length.total <- length(hbb.split.vect)
+
+#to make the loop work I need to not go all the way to end
+## this will make sense in a secon
+length.working <- length.total-2
+
+
+# store the data
+word.matrix <- matrix(data = NA, 
+                      nrow = length.working, 
+                      ncol = 3)
+```
+
+
+Now the loop
+
+```{r}
+
+for(i in 1:length.working){
+  
+  word.i.vect <- hbb.split.vect[c(i, i+1, i+2)]# what does c(i, i+1, i+2) do?
+  
+  word.matrix[i ,] <- word.i.vect
+  
+}
+```
+
+
+I can compile these into the actual words
+```{r}
+word.vector <- rep(NA, nrow(word.matrix))
+
+#length(word.vector)
+
+i <- 1
+for(i in 1:145){
+  #print(word.matrix[i,])
+  word.vector[i] <- paste(word.matrix[i,], sep = "", collapse = "")
+}
+```
+
+
+Pevsner uses these words in his example in figure 4.12 page 139
+```{r}
+word.vector[c(12:20)]
+```
+
+
+
+The words overlap.  The "A" in the first word "VTA" therefore shows up in
+VTA
+TAL
+ALW
+
+
+
+The following code just creates a matrix to illusate this this
+
+```{r}
+
+overlap.matrix <- matrix(data = "", nrow = 20, ncol = 22)
+
+for(i in 1:20){
+  overlap.matrix[i,c(i,i+1,i+2) ] <- word.matrix[i,]
+}
+
+colnames(overlap.matrix) <- hbb.split.vect[1:22]
+
+
+```
+
+The code below shows the words that are shown in Pevsner Figure 4.12, page 139.
+```{r}
+overlap.matrix[c(12:20), c(12:22)]
+```
+
+I am not positive, but I'm guessing for all accession numbers BLAST has already compiled a word list.  Then, if a search is done with an accession number (rather than a raw sequence) it doesn't have to waste time with the word list.
+
+
+## BLAST Algorithm and the word list
+
+I have listed all of the 3 letter BLAST words in the HBB gene in a vector called word.vector
+```{r, eval = F}
+word.vector
+```
+
+
+Once BLAST has generated this list of all possible overlaping words, it will iterate over each one.  In the following example, we'll just condier the word "LWG", which is the 15th word in the word list
+```{r}
+word.vector[15]
+```
+
+Note that is it possibel for the same word to appear in more than one place.  We can see if this occurs in our HBB gene.  The table() function allows us to count up the number of occurrences of each word.
+
+```{r}
+
+word.table <- table(word.vector)
+
+```
+
+The order() function lets us create an index based on the number of times each word occures
+```{r}
+
+i.order <- order(word.table,decreasing = T)
+
+```
+
+We can then display the order
+
+```{r, eval = F}
+
+word.table[i.order]
+
+```
+
+How many words occur more than once?
+
+
+We can also get a quick sense of things with the hist() command
+```{r, eval = F}
+hist(word.table)
+```
+
+
+The plot command tries to make sense of things but it kind of goes crazy
+```{r, eval = F}
+plot(word.table, ylab = "")
+```
+
+This works a bit better
+```{r, eval = F}
+plot(word.table[i.order], ylab = "")
+```
+
+Challenge: what is this code doing:
+
+```{r,eval = F}
+
+plot(word.table[i.order[1:10]], ylab = "")
+```
+
+
+## Focal word from HBB query: "LWG"
+
+So far we've made
+
+1. A list of ALL 8000 BLAST words
+1. A list of all the words that occur in the HBB gene.
+
+Now we want to score all of the words in the HBB gene using a matrix.  We can then just proceed with the highest scoring words.  We will use the 15th word LWG as an example and scores its alignment with each of the 8000 words in the word list.
+
+```{r}
+# Focal BLAST "word" from Figure 4.12, "Phase 1", Pevsner pg 139.
+word.focal <- c("L","W","G")
+```
+
+
+Make a place to store the scores when we compare LWG to the master word list
+```{r}
+word.scores <- matrix(NA, 
+                      nrow = n.words, 
+                      ncol = 3)
+
+# convert to dataframe to make it easier to work with
+word.scores <- data.frame(word.scores)
+
+#assign column names
+colnames(word.scores) <- c("scrL1","scrL2","scrL3")
+
+```
+
+
+We'll now loop through each word in the master word list (words.all) and core it with the BLOSUM62 matrix.
+
+
+To explore this loop line by line, set i to 1 and run the code below
+
+```{r}
+i <- 1
+```
+
+
+The loop
+
+```{r}
+# For loop
+# This loop goes through each row of the master word matrix words.all
+# and does what with it?
+
+for(i in 1:nrow(word.scores)){
+  
+  # getting something from word.focal here...
+  ## note that I'm just indexing by [1], [2], [3]
+  ## What is stored in word.focal.letter1, word.focal.letter2, word.focal.letter3?
+  word.focal.letter1 <- word.focal[1]
+  word.focal.letter2 <- word.focal[2]
+  word.focal.letter3 <- word.focal[3]
+  
+  #getting something from words.list.all here...
+  ## note that I'm just indexing by [i, 1], [i, 2], [i, 3]
+  ## "i" is what is changing with each iteratio of the loop
+  ## (so i starts as 1, does everything in the loop, then
+  ##     i becomes 2, does everything in loop, then
+  ##     i becomes 3, ... and so on up to ...)
+  ## What is stored in words.list.all.letter1, words.list.all.letter2, words.list.all.letter3?
+  words.list.all.letter1 <- words.list.all[i,1]
+  words.list.all.letter2 <- words.list.all[i,2]
+  words.list.all.letter3 <- words.list.all[i,3]
+  
+  # Again, word scores is a matrix to store data,
+  # i takes on a different value with each iteration of the loop
+  # what am I doing here?
+  word.scores[i,1] <- BLOSUM62[word.focal.letter1, words.list.all.letter1]
+  word.scores[i,2] <- BLOSUM62[word.focal.letter2, words.list.all.letter2]
+  word.scores[i,3] <- BLOSUM62[word.focal.letter3, words.list.all.letter3]
+}
+```
+
+
+Can you figure out what this loop is doing?
+```{r}
+
+for(i in 1:nrow(word.scores)){
+  
+  word.scores$word.score[i] <- sum(word.scores[i,c(1,2,3)])
+}
+
+
+```
+
+aside: what I just did is the opposite of how most R programmers would do it
+ This is the R way of doing the above loop with sum() in is
+```{r}
+word.scores$word.score <- apply(word.scores[ c(1,2,3)], 1, sum)
+
+```
+
+What is the max score? How does this compare to Pevsner Figure 4.12
+```{r}
+max(word.scores$word.score)
+
+```
+
+
+
+Another loop to make something to help us examine the data.  Can you figure out what it is doing?
+
+```{r}
+# an empty vector made with the rep() function
+words.as.string <- rep(NA, n.words)
+
+for(i in 1:nrow(word.scores)){
+  
+  words.as.string[i] <- paste(words.list.all[i, ], sep = "", collapse = "")
+}
+```
+
+aside: what I just did is the opposite of how most R programmers would do it
+This is the R way of doing the above
+```{r}
+words.as.string <- apply(words.list.all, 1, paste0, collapse = "")
+
+```
+
+
+What does cbind() do?
+```{r}
+word.scores <- cbind(words.as.string,
+                word.scores)
+
+```
+
+
+## Compare scores to cutoff "T"
+
+What is the distribution of scores?
+
+```{r, eval = F}
+library(ggpubr)
+gghistogram(data = word.scores,x = "word.score",
+            xlab = "Word score",
+            ylab = "Number of words") +
+  geom_vline(xintercept = 11, color = "red")
+
+```
+
+I want just those above T.  I'm going to remabe more of Figure 4.12
+
+First, some housekeeping.  This code asures that the contents of "words.as.string" are in the format
+that I want
+
+```{r}
+word.scores$words.as.string <- as.character(word.scores$words.as.string)
+
+```
+
+What does this code do?
+```{r}
+i.order <- order(word.scores$word.score,decreasing = T)
+word.scores.sorted <- word.scores[i.order, ]
+
+```
+
+
+I want just those >11
+```{r}
+i.10.or.more <- which(word.scores.sorted$word.score > 11)
+
+word.scores.above.t <- word.scores.sorted[i.10.or.more, ]
+
+```
+
+
+Pevsner uses T = 11, and further subsets based on representive words. 
+
+The words he uses are these 15
+```{r}
+fig.4.12.aa <- c("LWG","IWG","MWG","VWG","FWG",
+                 "AWG","LWS","LWN","LWA","LYG",
+                 "LFG","FWS","AWS","CWS","IWC")
+
+```
+
+
+I can use the which() and %in% commands to locate those words that occur in the vector fig.4.12.aa.  THe %in% command is not a conventional R command and I do not expect you do know it.
+
+```{r}
+i.fig.4.12.aa <- which(word.scores.sorted$words.as.string %in% fig.4.12.aa)
+```
+
+This should reproduce the gist of the scores in the top part of Figure 4.12:
+```{r}
+word.scores.sorted[i.fig.4.12.aa, ]
+```
+
+
+
+## Comparing query sequence of HBB to the database
+
+
+Below is the sequence of gene, anillin, from drosophila which were are intereted in for neural defect.
+I am going to see if any of the words above the threshold T from my query sequence HBB occurs in this random gene.
+
+The meta data is: sp|Q9V4P1|ANLN_DROME Anillin OS=Drosophila melanogaster OX=7227 GN=scra PE=1 SV=3
+```{r, echo  = F}
+anillin <-c("MDPFTQHMLEKAEQRSRALGISNASKFPLVECSVPSSSATSASGGDAGVLAPRSRSPGGQ
+SAASGGGKVVTLGKATLEASPAKPLRHYTAVNKENLDMGIEINITTDKPIGVQVEIQEQE
+VTDDEEQAEGGALNPLLEAEPVNQPLARLRDTSRSRLQRMGALYSNTDDLSSPIHRTEGQ
+FHVTTGEEEDCGNRSSRQPKQRLGKLAALADTINQWEDDTSHHEVHRLLEAPPPKPHLSS
+RRAEKGPAPLPPKKDEVDEASRTKQLKWDPKVLSSLEAQGFQRRESSTIKHTYDYAKQEE
+AAPASKVEDAVLTAKPPVPQKSTTVSQVAKNFASSAPAPKPAPAPAVSVKSGLVSGRAAL
+FENKGTGGQSQGLRNQKDPCELSLKERMKLFETGNNKAMLPMAPIGSAPSITQIRAEEVK
+QHLAAMHPVTAAAATTVVAATKPKQENKLRDKVAALVANAQSSAETRIKDIDRQRQEDMQ
+IISNRFNKQKELFDNQPSDSSVAAQARPPAPAPSRVVRPMPPPPPPPIAALSPGLASSKR
+RSPGDAPTTDEDSKRARKSHSDRLYPALSDLDSSGDNCCAAETASATDDSHQQDEEETES
+CMDESDDQSQTEDSSAGMCNGSLGREIMSAVQRNEVEMQQQQTGKKTVRYADQDMYYDDS
+SLNSSQVSAGIDDYLDEALVEDYGSTQDDQSDSGDEQNASRLSLGSKGTTASNSFSFRKN
+PASICTPIEEHHEMEMDLQTPLLSGAQPVKSELSVNQDNDNLVTLVHTVSFYRRQQSANS
+SNSTPVRKICREQQVMRSALAGDCHAKHRLEYDSPQQSDYVAAATDIADQTDEDDEEMQN
+AREVNDASQAQDKIKKLLSEVCKQQQVIGQASQALNLCAATVEFSGSTESVEGERYLLLA
+THRRQACLDEVQRLRVENSIRPVGAPKEKGLLTVKDITIPLRQEYVRKMASNNINGHHLV
+CLLKYNEHVLATKTVPTMPGLLSVKFPDVLQLNNVYADFRITLEIYGMLAQRDQLPHELK
+YHINLNKKGGIKTPKKKGGENRLVMPPVQSPAGPHVVRTPQLVQYGFAIFSLREIQRTTW
+TLTQVLGVSPLEGVVHMKVNCELSVSVEYKGFLTMFEDISGFGAWHRRWCYLNGSVINYW
+KYPDDEKRKTPMGSIDLNSCTSQKVTTAPRDICARLNTMLLECERPALETDQESLIIVPN
+GRTTTVRHLLSADTKEEREEWCAYLNKALTLLRAWGTTH")
+```
+
+
+
+
+The most direct way to do this is to use a regular expression grepl(), which tells me if a search string occurrs in teh sequence or not.  I can then cycle through each of the scores abouve t from HBB and check if they occur in anillin.
+
+First I need a place to but the "hit" where a word in HBB occurr in anillin.  I'll make a new column in my vector of top-scoring words:
+```{r}
+word.scores.above.t$hit <- NA
+```
+
+
+Now I am going to loop over each word with T>11.  I will have grepl() scan the full sequence of anillin.  If it finds a match it will store the value of TRUE.  Otherwise if will return FALSE.  If TRUE is returned, then I'll store the word "TRUE" in my date matrix.  If not, I'll skp to the next word.
+
+(As always, I don't expect you to learn regular expressions in this class.  If ever needed, I will wite the code; I might ask you in general what is going on though).
+```{r}
+
+for(i in 1:nrow(word.scores.above.t)){
+  
+  # Run the regular express
+  hit.output <- grepl(word.scores.above.t$words.as.string[i], anillin)
+  
+  if(hit.output == TRUE){
+    
+    word.scores.above.t$hit[i] <- hit.output
+    
+  }
+
+}
+```
+
+
+The only "hit" I get is for "AWG".  What does this mean?  This means that for the word "LWG" in the gene HBB, the similar word "AWG" occurs in anillin just time.  This match would then be used as a starting point for a local alignmnet by BLAST
+```{r}
+head(word.scores.above.t)
+```
+
+It should be noted, of course, that "LWG" is just one of dozens of words in HBB, so this process needs to be repeated many more times to see which other words in HBB - and their high scoring relatives - occur in anillin.  Then this needs to be repated for other genes in the database.
+
+
+\pagebreak
+
+## Another approach
+
+What I've just done requires actively scanning a sequence.  BLAST would have to cycle through each sequence in its database and run the scan for each word above the threshold T.  It might actually do this (Pevsner makes it sound like this is what it does).  
+
+What I sepect, though, is that for each sequence in its database BLAST has already compiled a list of words.  Then instead of actively scanning the sequence it just cross references the words.  The code below generated this list for anillin.
+
+
+Remove the slash n new line symbol 
+```{r}
+
+anillin <- gsub("\n","", anillin)
+
+
+anillin.split.list <- strsplit(anillin,"")
+
+
+anillin.split.vect <- unlist(anillin.split.list)
+
+
+anillin.length.total <- length(anillin.split.vect)
+
+
+
+anillin.length.total <- anillin.length.total-2
+
+
+# store the data
+anillin.word.matrix <- matrix(data = NA, 
+                      nrow = anillin.length.total, 
+                      ncol = 3)
+
+
+#
+for(i in 1:anillin.length.total){
+  
+  word.i.vect <- anillin.split.vect[c(i, i+1, i+2)]# what does c(i, i+1, i+2) do?
+  
+  anillin.word.matrix[i ,] <- word.i.vect
+  
+}
+
+
+anillin.word.vector <- rep(NA, nrow(anillin.word.matrix))
+
+
+for(i in 1:length(anillin.word.vector)){
+  anillin.word.vector[i] <- paste(anillin.word.matrix[i,], sep = "", collapse = "")
+}
+
+
+
+
+
+anillin.word.table <- table(anillin.word.vector)
+ 
+
+
+
+i.anillin.order <- order(anillin.word.table,decreasing = T)
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
+```{r, eval = F}
+anillin.word.table[i.anillin.order]
+```
+
+
+
+```{r, eval = F}
+
+hist(anillin.word.table)
+
+
+plot(anillin.word.table[i.anillin.order],ylab = "")
+
+
+
+plot(anillin.word.table[i.anillin.order[1:175]],ylab = "")
+```
+
+
+
+
+
+## Compare HBB words > T with anillin word database
+
+Once I've worked up a set of words for anillin, I can use which() and %in% to see where the matches are.
+
+```{r, eval = F}
+
+i.match <- which(word.scores.above.t$words.as.string %in% anillin.word.vector)
+
+
+word.scores.above.t[i.match, ]
+
+```
+
+
+
+
+
+
+
+
+
