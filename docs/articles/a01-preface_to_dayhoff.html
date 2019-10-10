@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dayoff</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9014</span>
       </span>
     </div>
 
@@ -60,9 +60,6 @@
       <a href="../articles/a02-loading_dayoff_tutorials.html">a 02) Loading tutorials from the dayoff package</a>
     </li>
     <li>
-      <a href="../articles/b01-organization_of_package_AC01.html">b 01) Organization of the dayoff pakcage</a>
-    </li>
-    <li>
       <a href="../articles/b02-downloading_R_AC01.html">b 02) Downloading R</a>
     </li>
     <li>
@@ -78,7 +75,13 @@
       <a href="../articles/b06-brief_intro_to_R_AC01.html">b 06) Brief introduction to R</a>
     </li>
     <li>
-      <a href="../articles/c01_unprot_by_GUI-AC07.html">e1) Downloading sequences from UniProt by hand</a>
+      <a href="../articles/c01-NCBI_by_GUI2_AC0x.html">c 01) Introduction to NCBI databases</a>
+    </li>
+    <li>
+      <a href="../articles/c02-NCBI_by_GUI_AC03.html">c 02) Downloading NCBI sequence data by hand</a>
+    </li>
+    <li>
+      <a href="../articles/c03_unprot_by_GUI-AC07.html">c 03) Downloading sequences from UniProt by hand</a>
     </li>
     <li>
       <a href="../articles/x-creating_a_package.html">x) Creating this package</a>
@@ -111,7 +114,7 @@
       <h1>a 01) Preface to the dayoff package</h1>
                         <h4 class="author">Nathan Brouwer</h4>
             
-            <h4 class="date">2019-10-09</h4>
+            <h4 class="date">2019-10-10</h4>
       
       
       <div class="hidden name"><code>a01-preface_to_dayhoff.Rmd</code></div>
@@ -120,7 +123,7 @@
 
     
     
-<p>The “dayoff” package is a teaching-oriented package based off of Dr. Avril Coghlan’s <a href="https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/index.html"><em>A little book of R for bioinformatics.</em></a>. Almost all of text and code was originally written by Dr. Coghlan and distributed under the <a href="https://creativecommons.org/licenses/by/3.0/us/">Creative Commons 3.0</a> license.</p>
+<p>The “dayoff” package is a teaching-oriented <em>R</em> package based off of Dr. Avril Coghlan’s <a href="https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/index.html"><em>A little book of R for bioinformatics.</em></a>. Much of the text and code was originally written by Dr. Coghlan and distributed under the <a href="https://creativecommons.org/licenses/by/3.0/us/">Creative Commons 3.0</a> license.</p>
 <div id="the-name-of-the-package" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-name-of-the-package" class="anchor"></a>The name of the package</h2>
@@ -132,16 +135,21 @@
 <p>To meet the needs of my course I have</p>
 <ol style="list-style-type: decimal">
 <li>Edited the original HTML document into RMarkdown</li>
-<li>Use RStudio IDE instead of basic R IDE</li>
-<li>Split up into short lessons</li>
-<li>Place functions by Coghlan into an R package.<br>
+<li>Used the RStudio IDE instead of the basic R IDE</li>
+<li>Split up Coghlan’s original chapters into short lessons</li>
+<li>Placed functions written by Coghlan into the R package instead of requiring that they be loaded by hand.<br>
 </li>
-<li>Changed which functions or packages are used; for example, replacing some SeqinR functions with entrez functions.</li>
-<li>Added additional plots and changed some plotting functions</li>
+<li>Changed which functions or packages are used; for example, replacing some SeqinR functions with rentrez functions.</li>
+<li>Added additional plots and changed some plotting functions, such as using ggplot2 and ggpubr.</li>
 <li>Removed .jpg images; I hope to add these back</li>
-<li>Fixed typos, removed dead links, and additional links, truned links to hypertext</li>
+<li>Fixed typos, removed dead links, and additional links, turned links to hypertext, converted to American English (sorry!)</li>
 <li>Added a summary section at the beginning listing the functions, vocabulary, software, organism, accession numbers</li>
 </ol>
+</div>
+<div id="new-material" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-material" class="anchor"></a>New material</h2>
+<p>A number of new lessons have been added, especially in the “tutorials” folder. See the vignette “Loading tutorials from the dayoff package” for more information. Some of these are based off of re-creating figures or tables from the bioinformatics book by Pevsner. THere are also tutorials related to re-building the original PAM matrices by M. Dayoff.</p>
 </div>
   </div>
 
@@ -153,6 +161,7 @@
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#the-name-of-the-package">The name of the package</a></li>
       <li><a href="#changes-made-to-original-source">Changes made to original source</a></li>
+      <li><a href="#new-material">New material</a></li>
       </ul>
 </div>
       </div>

@@ -1,0 +1,46 @@
+---
+title: "c 02) Downloading NCBI sequence data by hand"
+author: "Avril Coghlan, adapted by Nathan Brouwer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{c 02)Downloading NCBI sequence data by hand}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warnings = FALSE,
+  cache = TRUE
+)
+```
+
+The folowing vignette was originally written by Avril Coghlan.  It provides basic information for how to access sequences via the internet.
+
+## Retrieving genome sequence data via the NCBI website
+
+You can easily retrieve DNA or protein sequence data by hand from the NCBI Sequence Database via its website www.ncbi.nlm.nih.gov.
+
+Dengue DEN-1 DNA is a viral DNA sequence and its NCBI accession is NC_001477. To retrieve the DNA sequence for the Dengue DEN-1 virus from NCBI, go to the NCBI website, type “NC_001477” in the Search box at the top of the webpage, and press the “Search” button beside the Search box.
+
+(While this is the normal workflow, accessions related well-known organisms can sometimes turn up using a direct google search.  This is the case for NC_001477 - if you google it you can go directly to the website with the genome sequence: https://www.ncbi.nlm.nih.gov/nuccore/NC_001477).
+
+On the results page of a normal NCBI search you will see the number of hits to “NC_001477” in each of the NCBI databases on the NCBI website. There are *many* databases on the NCBI website, for example, the **PubMed** and **Pubmed Central** data contain abstracts from scientific papers, the **Genes** and **Genomes** database contains DNA and RNA sequence data, the **Proteins** database contains protein sequence data, and so on. 
+
+Most people would do this by hand, but it can also be done via R using the *rentrez* package.  In this tutorial we'll focus on the web interface. Its good to remember, though, that almost anything done via the webpage can be automated using an **R script**.
+
+As you are looking for the DNA sequence of the Dengue DEN-1 virus genome, you expect to see a hit in the NCBI Nucleotide database.  This is indicated at the top of the page where it says "NUCLEOTIDE SEQUENCE" and lists "Dengue virus 1, complete genome."
+
+When you click on the linke for the Nucleotide database, it will bring you to the record for NC_001477 in the NCBI Nucleotide database. This will contain the name and NCBI **accession** of the sequence, as well as other details such as any papers describing the sequence.  If you scroll down you'll see the sequence also.
+
+If you need it, you can retrieve the DNA sequence for the DEN-1 Dengue virus genome sequence as a **FASTA format** sequence file in a couple ways.  The easiest is just to copy and paste it into a text, .R, or other file.  You can also click on **“Send to”** at the top right of the NC_001477 sequence record webpage (just to the left fo the side bar; its kinda small).
+
+After you click on **Send to** you can pick several options. and then choose “File” in the menu that appears, and then choose FASTA from the “Format” menu that appears, and click on “Create file”.  The sequence will then donwload.  The default file neame is **sequence.fasta** so you'll probably want to change it.
+
+
+You can now open the FASTA file containing the DEN-1 Dengue virus genome sequence using a text editor like Notepad, WordPad, Notepad++, or even RStudio.on your computer.  To find a text editor on your computer search for "text" from the start menu (Windows) and usually one will come up. (Opening the file in a word processor like word isn't recommended).

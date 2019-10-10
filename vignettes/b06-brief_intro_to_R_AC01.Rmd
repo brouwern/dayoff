@@ -27,32 +27,33 @@ This chapter provides a brie introduction to R.  At the end of are links to addi
 
 ## Vocabulary
 
-scalar
-vector
-list
-class
-numeric
-character
-assignmnet
-elements of an object
-indices
-attributes of an object
-arguement of a function
+* scalar
+* vector
+* list
+* class
+* numeric
+* character
+* assignmnet
+* elements of an object
+* indices
+* attributes of an object
+* arguement of a function
 
 ## R functions etc
-<-
-[ ]
-$
-table()
-function
-c()
-log10()
-help()
-help.search()
-RSiteSearch()
-mean()
-return()
-q()
+
+* <-
+* [ ]
+* $
+* table()
+* function
+* c()
+* log10()
+* help(), ?
+* help.search()
+* RSiteSearch()
+* mean()
+* return()
+* q()
 
 ## A brief introduction to R
 
@@ -190,7 +191,12 @@ In R, you can get help about a particular function by using the help() function.
 help("log10")
 ```
  
-When you use the help() function, a box or webpage will show up in one of the panes of RStuiod with information about the function that you asked for help with.
+When you use the help() function, a box or webpage will show up in one of the panes of RStudio with information about the function that you asked for help with.  You can also use the ? next to the fuctnion
+
+```{r, eval = F}
+?log10
+```
+
 
 If you are not sure of the name of a function, but think you know part of its name, you can search for the function name using the help.search() and RSiteSearch() functions. The help.search() function searches to see if you already have a function installed (from one of the R packages that you have installed) that may be related to some topic you’re interested in. The RSiteSearch() function searches all R functions (including those in packages that you haven’t yet installed) for functions related to the topic you are interested in.
 

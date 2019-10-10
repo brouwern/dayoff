@@ -12,14 +12,14 @@
 score_alignment <- function(seq.df,
                             seq1,
                             seq2,
-                            sub.mat = NULL,
+                            sub.mat,
                             gap.penalty =-10,
                             gap.extend =-4){
 
-  if(is.null(sub.mat) == TRUE){
-    library(Biostrings)
-    sub.mat<-data(BLOSUM62)
-  }
+  # if(is.null(sub.mat) == TRUE){
+  #   library(Biostrings)
+  #   sub.mat<-data(BLOSUM62)
+  # }
 
   seq.df$score <- NA
 

@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-The *dayoff* package contains standard R vignettes which detail features of the package and have written tutorials on bioinformatics tasks.  These are best accessed via the package website at https://brouwern.github.io/dayoff/articles/
+The *dayoff* package contains standard R vignettes (such as this one) which detail features of the package and have written tutorials on bioinformatics tasks.  These are best accessed via the package website at https://brouwern.github.io/dayoff/articles/
 
-The package also contains .Rmd tutorials which are meant to be interactive.  These are all downloaded when the package is installed and can be called up using the following function:
+The package also contains .Rmd tutorials which are meant to be interactive.  These are all downloaded when the package is installed and can be called up using the following function.
 
 First, you can see what tutorials are available
 ```{r, eval = F}
@@ -34,9 +34,9 @@ tutor_show()
 You can open a specific tutorial using tutor_open()
 
 ```{r, eval = F}
-tutor_open()
+tutor_open("tutorial name")
 ```
-
+It is easiest to use tutor_show() to get a list of tutorial names and then paste the name into the tutor_open() command.
 
 ## NOTE: Every time you download dayoff these tutorials will be re-installed! Save your work/notes with a new file name if you want to keep your unique version of the file
 

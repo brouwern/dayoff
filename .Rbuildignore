@@ -7,3 +7,5 @@
 ^doc$
 ^Meta$
 ^\.httr-oauth$
+[.]xlsx$
+cache

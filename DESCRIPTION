@@ -1,6 +1,6 @@
 Package: dayoff
 Title: Bioinformatics in R
-Version: 0.0.0.9013
+Version: 0.0.0.9015
 Authors@R: 
     person(given = "Nathan",
            family = "Brouwer",
@@ -41,6 +41,8 @@ Imports:
     BiocManager,
     rstudioapi,
 	systemfonts,
-	matrixcalc
+	matrixcalc,
+	evd,
+	HistData
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1

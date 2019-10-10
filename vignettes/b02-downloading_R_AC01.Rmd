@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The following introduction to R is based on the first part of ["How to install R and a Brief Introduction to R"](https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/src/installr.html) By Coghlan.  For additional information see ["Getting R onto your compute"](https://brouwern.github.io/BOOK_R_Ecological_Data_Science/getting-r-onto-your-computer.html).
+The following introduction to R is based on the first part of ["How to install R and a Brief Introduction to R"](https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/src/installr.html) by Avril Coghlan.  For additional information see ["Getting R onto your compute"](https://brouwern.github.io/BOOK_R_Ecological_Data_Science/getting-r-onto-your-computer.html).
 
 
 ## Introduction to R

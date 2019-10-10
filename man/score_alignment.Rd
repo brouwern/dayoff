@@ -4,7 +4,7 @@
 \alias{score_alignment}
 \title{Score a simple alignment}
 \usage{
-score_alignment(seq.df, seq1, seq2, sub.mat = NULL, gap.penalty = -10,
+score_alignment(seq.df, seq1, seq2, sub.mat, gap.penalty = -10,
   gap.extend = -4)
 }
 \arguments{

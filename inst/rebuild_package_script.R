@@ -1,3 +1,6 @@
+usethis::use_build_ignore("[.]xlsx$", escape = FALSE)
+usethis::use_build_ignore("cache", escape = FALSE)
+
 devtools::load_all(".")
 
 # vignettes
@@ -42,5 +45,27 @@ devtools::check() # = "check package" on GUI, = R CMD check?
 system("git add .")
 system("git commit -m 'update'")
 system("git push")
+
+
+
+
+
+
+
+
+library(knitr)
+
+getwd()
+
+list.dirs(full.names = F,
+          recursive  = T,
+          path = getwd())
+
+dir. <-here::here("inst/tutorials")
+fi. <- here::here("inst/tutorials/AC04-01-vectors.Rmd")
+list.files(fi.)
+file.exists(fi.)
+knit(input = )
+
 
 

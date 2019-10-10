@@ -7,11 +7,7 @@
 tutor_open(tutorial = NULL)
 }
 \arguments{
-\item{tutorial}{name of tutorial to open as a quotes string.  Defaults to NULL and opens up a sample tutorial.
-
-#@examplesOpen up an example file.  To see a list of available tutorials use tutor_show()
-
-#tutor_open()}
+\item{tutorial}{name of tutorial to open as a quotes string.  Defaults to NULL and opens up a sample tutorial.}
 }
 \description{
 This function identifies where on your local hard drive the dayoff package is located.  It then locates the tutorials folder and opens the specified tutorial using rstudioapi::navigateToFile

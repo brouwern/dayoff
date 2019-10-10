@@ -3,6 +3,8 @@ title: "Simulating sequences to get an EVD"
 author: "Nathan Brouwer"
 date: "10/9/2019"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -10,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-Figure 4.14 in Pevsner is an idealized curve based on equations that exactly describe the the normal distribution and the extreme value distribution (EVD).  Ther following code will run simluations to create an EVD
+Figure 4.14 in Pevsner is an idealized curve based on equations that exactly describe the the normal distribution and the extreme value distribution (EVD).  The following code will run simluations to create an EVD based based on on amino acids.
 
 
 ## Preliminaries
@@ -20,6 +22,9 @@ Figure 4.14 in Pevsner is an idealized curve based on equations that exactly des
 library(Biostrings)
 ```
 
+## The amino acid code
+
+We need a list of all the 1-letter codes for amino acids.  We can make this from the LETTERS object in are.  Below I use **negative** indexing to do this.  I make a vector of letters that are NOT amino acids, and then remove them.
 
 ```{r}
 #1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6        
@@ -31,55 +36,162 @@ aas <- LETTERS[-not.an.aa]
 ```
 
 
+I need to create random sequences of polypeptides.  One way to do this is using the runif() function  (random-uniform) and set the range from 0.5 to 20.5, then round off the result
+
+First, make up some random numbers
 ```{r}
-
-
-
-rand.num <- runif(n = 100,min = 1, max = 20)
+rand.num <- runif(n = 100,min = 0.5, max = 20.5)
 rand.num <- round(rand.num)
+
+rand.num
+```
+
+
+Note that all of the random numbers occur at least once.
+```{r}
+hist(rand.num)
+```
+
+Now use those random number as indices to pull out the amino acid codes.  If a letter occurs more than once, it gets pulled out each time.  
+```{r}
 aas[rand.num]
+```
 
-rand_seq_aa <- function(n){
-  aas <- LETTERS[-not.an.aa]
-  rand.num <- runif(n = n,min = 1, max = 20)
-  rand.num <- round(rand.num)
-  rand.seq <- aas[rand.num]
-  return(rand.seq)
+
+I slightly more direct way to do this is with the sample() function
+
+```{r}
+sample(x = aas, size = 100, replace = TRUE)
+```
+
+
+sample() allows you to vary the probabilities for each possibility.  As we know from studying PAM matrices amino acids vary in how often they occur in nature.
+
+This code sets up the frequencies from Dayhoff's original paper.  (The use of the function order()) puts it in alphabetical order
+```{r}
+frequencies <- c(0.089, 0.087, 0.085, 0.081, 0.070, 
+                 0.065, 0.058, 0.051, 0.050, 0.047, 
+                 0.041, 0.040, 0.040, 0.038, 0.037, 
+                 0.034, 0.033, 0.030, 0.015, 0.010)
+
+aa <- c("Gly", "Ala", "Leu", "Lys", "Ser", 
+        "Val", "Thr", "Pro", "Glu", "Asp",
+        "Arg", "Asn", "Phe", "Gln", "Ile",
+        "His", "Cys", "Tyr", "Met", "Trp")
+
+freqs <- data.frame(aa = aa[order(aa)], 
+                    frequencies = frequencies[order(aa)])
+
+hist(freqs$frequencies, breaks  = 20)
+```
+
+
+I can set up my sampling based on the relative frequencies like this
+
+```{r}
+sample(x = freqs$aa, 
+       size = 100, 
+       replace = TRUE, 
+       prob = freqs$frequencies)
+```
+
+I can summarize the results using table().  
+
+```{r}
+x <- sample(x = freqs$aa, 
+       size = 100, 
+       replace = TRUE, 
+       prob = freqs$frequencies)
+
+table(x)
+```
+
+
+
+I can encapsulate this in a custom function I'll call rand_seq_aa()
+```{r}
+rand_seq_aa <- function(n = 100, aas, probs){
+   sample(x = aas, 
+          size = n, 
+          replace = TRUE, 
+          probs = probs)
 }
 
+```
+
+Every single time I run it, it gives me a random polypeptide.
+```{r}
+rand_seq_aa()
+```
 
 
-seq.length <- 1000
+
+
+Now I generate a database of random sequences
+```{r}
+#I want each polypeptide to be 1000 aa
+seq.length <- 120
+
+# I want 1000 fake sequences
 seq.n <- 1000
-random.seqs <- matrix(data = NA, nrow = seq.length, ncol =seq.n)
 
-for(i in 1:ncol(random.seqs)){
-  random.seqs[,i] <- rand_seq_aa(n = seq.length)
+# I'll store them here
+random.seqs <- matrix(data = NA, nrow = seq.n, ncol =seq.length)
+rownames(random.seqs) <- paste0("r.seq",1:seq.n)
+
+random.seqs[1:10,1:10]
+
+# Use a loop to run my rand_seq_aa() function 1000 times
+for(i in 1:nrow(random.seqs)){
+  random.seqs[i,] <- rand_seq_aa(n = seq.length)
 }
 
-dim(random.seqs)
+# Each row represents a sequence
+## first 10 aa of first 10 sequences
+random.seqs[1:10,1:10]
 
+# first 10 aa of last 10 seqs
+random.seqs[990:1000,1:10]
+```
+
+
+I will compare a real Shroom sequence against my database of 1000 fake sequences.
+```{r}
 shrm <- c("MKTPENLEEPSATPNPSRTPTERFVYLEALLEGGAPWGFTLKGGLERGEPLIISKIEEGGKADSVSSGLQAGDEVIHINEVALSSPRREAVSLVKGSYKTLRLVVRRDVCAAPGHADPGT")
 
+
+```
+
+Check that everything is the same size
+```{r}
 nchar(shrm)
 
 nchar(shrm) == seq.length
-colnames(random.seqs) <- paste0("r.seq",1:1000)
+```
 
 
+I am going to do a **local, pairwise** alignment between my shroom sequence and each random sequence.  I need a place to keep my alignment scores.
 
-colnames(random.seqs[,1:5])
-head(random.seqs[,1:5])
-
-
+```{r}
 random.seqs.score <- rep(NA,seq.length)
+```
 
-for(i in 1:ncol(random.seqs)){
+Now I will loop through each row of my random sequences, grab the sequence, format it into a character string using paste(), and align it with pairwiseAlignment().
+
+(If you don't want all the text printe out you can comment out the cat() and print() commands with a hash tag).
+
+```{r}
+for(i in 1:nrow(random.seqs)){
   
-  rand.seq.i <- paste(random.seqs[,i], sep = "",collapse = "")
+  # turn row of matrix into a character vector 
+  rand.seq.i <- paste(random.seqs[i,], sep = "",collapse = "")
+  
+  # print some output
   cat("\n")
-  print(i)
+  cat("Iteration", i)
   print(substr(rand.seq.i,1,20))
+  
+  # do alignment
   score.i    <- pairwiseAlignment(shrm,
                                   rand.seq.i,
                                   type = "local",
@@ -88,36 +200,116 @@ for(i in 1:ncol(random.seqs)){
                                   gapExtension=1,
                                   scoreOnly  = T)
   
+  #store score
   random.seqs.score[i] <- score.i
 }
+```
 
 
+What we have is a set of scores between a real sequence and a random sequence.  We'd expact this all to be really lower socres, but due to random chance we might get a big one.  Let's look at the distribution
+
+
+Most scores are around 30, but there are a few that are pretty good.
+```{r}
+hist(random.seqs.score)
+```
+
+Let's characterize this distribution of scores and compare it to a normal distribution
+
+First, we want the mean, median, min, max and sd of the scores
+```{r}
 scores.mean <- mean(random.seqs.score)
-scores.med <- median(random.seqs.score)
 
 
-#this code is a bit deep
-## code originally from https://www.statmethods.net/graphs/density.html
-## but its not that well explained either
-hist(random.seqs.score,breaks = 20)
-score.hist <- hist(random.seqs.score)
-abline(v = scores.mean, col = 2)
-abline(v = scores.med, col = 3)
-
-scores.sd  <- sd(random.seqs.score)
-score.min  <- min(random.seqs.score)
-score.max  <- max(random.seqs.score)
-scores.seq <- c(score.min:score.max)
-
-shapiro.test(random.seqs.score)
-
-yfit<-dnorm(scores.seq,
-            mean = scores.mean,
-            sd=scores.sd)
-
-yfit <- yfit*diff(score.hist$mids[1:2])*length(random.seqs.score)
-lines(scores.seq, yfit, col="blue", lwd=2)
 
 ```
 
+To make the plotting easier I am going to **re-center** the distribution at zero.  I do this by subtracting the mean from the scores
+
+```{r}
+random.seqs.score.centered <- random.seqs.score-scores.mean
+```
+
+
+This doesn't change the shape of the histogram, just puts the mean at 0.  This is very common in stats.
+```{r}
+hist(random.seqs.score.centered)
+```
+
+Now I want the median, min, max and sd of the **centered data**.
+```{r}
+scores.med <- median(random.seqs.score.centered)
+score.min  <- min(random.seqs.score.centered)
+score.max  <- max(random.seqs.score.centered)
+scores.sd  <- sd(random.seqs.score.centered)
+```
+
+
+I'm going to do my blotting with a wider range of x values.  This is set with the xlim arguement.  The abline() function puts reference lines for the mean and median
+```{r}
+x.axis.range <- c(-1*score.max,score.max)
+
+hist(random.seqs.score.centered,
+     breaks = 20, 
+     xlim = x.axis.range)
+abline(v = 0, col = 2)
+abline(v = scores.med, col = 3)
+```
+
+
+Now I'm going to overlay a normal distribution on the data.  This code is a bit dense.  See https://www.statmethods.net/graphs/density.html for another example, though its not well annotated.
+
+First, I need a sequence of numbers for my x-axis range
+```{r}
+scores.seq <- seq(-1*score.max, score.max)
+
+```
+
+I save my histogram as an object
+```{r}
+my.hist <- hist(random.seqs.score.centered,
+     breaks = 20, 
+     xlim = x.axis.range)
+```
+
+
+Now I calcualte the data the represents the normal curve
+```{r}
+normal.curve.ht <-dnorm(scores.seq,
+            mean = 0,
+            sd=scores.sd)
+
+
+
+```
+
+I need to tweak the height
+```{r}
+normal.curve.ht <- normal.curve.ht*diff(my.hist$mids[1:2])*length(random.seqs.score.centered)
+```
+
+Now plot the histogram of the scores I simualted and a normal curve.  Note how on the left the curve is above the histogram bars, and on the right it below it.  Moreover, the tail on the left of the historgram stops short, while on the right large values occur even when the blue line of the normal distribution is basically flat.  What this means is that a normal distribution woudl have more small values than we see in our simulation, and fewer large values.
+
+```{r}
+hist(random.seqs.score.centered,
+     breaks = 20, 
+     xlim = x.axis.range)
+abline(v = 0, col = 2)
+abline(v = scores.med, col = 3)
+lines(scores.seq, normal.curve.ht, col="blue", lwd=2)
+
+```
+
+
+
+There are statistical functions that can test for normality.  They tell us that our data are most definitely not normal!
+```{r}
+shapiro.test(random.seqs.score)
+```
+
+Log transformations can make things more normal - not here!
+
+```{r}
+shapiro.test(log(random.seqs.score))
+```
 
